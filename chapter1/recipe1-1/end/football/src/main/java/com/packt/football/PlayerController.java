@@ -2,6 +2,7 @@ package com.packt.football;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.text.StringEscapeUtils;
 
 @RequestMapping("/players")
 @RestController
@@ -28,6 +29,8 @@ public class PlayerController {
 
     @PutMapping("/{name}")
     public String updatePlayer(@PathVariable String name, @RequestBody String newName) {
-        return "Player " + name + " updated to " + newName;
+        String safeName = StringEscapeUtils.escapeHtml4(name);
+        String safeNewName = StringEscapeUtils.escapeHtml4(newName);
+        return "Player " + safeName + " updated to " + safeNewName;
     }
 }
