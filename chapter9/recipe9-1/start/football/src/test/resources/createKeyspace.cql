@@ -1,1 +1,0 @@
-CREATE KEYSPACE footballKeyspace WITH replication = {'class': 'SimpleStrategy'};
