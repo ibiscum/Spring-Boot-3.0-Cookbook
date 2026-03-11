@@ -24,7 +24,8 @@ public class PlayerController {
 
     @DeleteMapping("/{name}")
     public String deletePlayer(@PathVariable String name) {
-        return "Player " + name + " deleted";
+        String safeName = StringEscapeUtils.escapeHtml4(name);
+        return "Player " + safeName + " deleted";
     }
 
     @PutMapping("/{name}")
