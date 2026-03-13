@@ -19,7 +19,8 @@ public class PlayerController {
 
     @GetMapping("/{name}")
     public String readPlayer(@PathVariable String name) {
-        return name;
+        String safeName = StringEscapeUtils.escapeHtml4(name);
+        return safeName;
     }
 
     @DeleteMapping("/{name}")
