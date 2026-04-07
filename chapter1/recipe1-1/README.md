@@ -4,6 +4,11 @@
     ./mvnw clean install -U
     ./mvnw spring-boot:run
 
+    docker run --rm -i hadolint/hadolint < Dockerfile
+    docker run -t --rm -v ${PWD}:/app zavoloklom/dclint .
+    docker build -t recipe1-1 .
+    docker run -p 8080:8080 recipe1-1
+
     curl http://localhost:8080/players
     curl http://localhost:8080/players/Ivana%20ANDRES
     curl --header "Content-Type: application/text" --request POST --data 'Itana BONMATI' http://localhost:8080/players
