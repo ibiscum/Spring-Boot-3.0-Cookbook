@@ -9,7 +9,7 @@ spring:
   security:
     oauth2:
       authorizationserver:
-        client:            
+        client:
           football:
             registration:
               client-id: "football"
@@ -20,4 +20,3 @@ spring:
                 - "client_credentials"
               scopes:
                 - "football:read"
-        
