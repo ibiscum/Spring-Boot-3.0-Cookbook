@@ -44,5 +44,4 @@ public class PlayerController {
     public void deletePlayer(@PathVariable String id) {
         footballService.deletePlayer(id);
     }
-
 }

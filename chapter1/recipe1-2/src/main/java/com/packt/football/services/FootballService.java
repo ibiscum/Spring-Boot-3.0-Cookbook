@@ -75,9 +75,4 @@ public class FootballService {
             players.remove(id);
         }
     }
-
-
-
-
-
 }
