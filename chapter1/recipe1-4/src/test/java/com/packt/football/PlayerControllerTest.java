@@ -47,8 +47,8 @@ public class PlayerControllerTest {
         mapper.registerModule(new JavaTimeModule());
         // ACT & ASSERT
         MvcResult result = mvc.perform(MockMvcRequestBuilders
-                        .get("/players")
-                        .accept(MediaType.APPLICATION_JSON))
+                .get("/players")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers
                         .jsonPath("$", hasSize(2)))
@@ -105,9 +105,9 @@ public class PlayerControllerTest {
         mapper.registerModule(new JavaTimeModule());
         // ACT & ASSERT
         mvc.perform(
-                        MockMvcRequestBuilders.put("/players/" + player.id())
-                                .content(mapper.writeValueAsString(player))
-                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.put("/players/" + player.id())
+                        .content(mapper.writeValueAsString(player))
+                        .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -120,9 +120,9 @@ public class PlayerControllerTest {
         mapper.registerModule(new JavaTimeModule());
         // ACT & ASSERT
         mvc.perform(
-                        MockMvcRequestBuilders.put("/players/" + player.id())
-                                .content(mapper.writeValueAsString(player))
-                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.put("/players/" + player.id())
+                        .content(mapper.writeValueAsString(player))
+                        .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -135,9 +135,9 @@ public class PlayerControllerTest {
         mapper.registerModule(new JavaTimeModule());
         // ACT & ASSERT
         mvc.perform(
-                        MockMvcRequestBuilders.post("/players")
-                                .content(mapper.writeValueAsString(player))
-                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.post("/players")
+                        .content(mapper.writeValueAsString(player))
+                        .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -150,9 +150,9 @@ public class PlayerControllerTest {
         mapper.registerModule(new JavaTimeModule());
         // ACT & ASSERT
         mvc.perform(
-                        MockMvcRequestBuilders.post("/players")
-                                .content(mapper.writeValueAsString(player))
-                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.post("/players")
+                        .content(mapper.writeValueAsString(player))
+                        .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 

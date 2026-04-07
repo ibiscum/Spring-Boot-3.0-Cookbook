@@ -6,3 +6,5 @@
 
     curl http://localhost:8080/players
     curl http://localhost:8080/players/99999
+
+    curl --header "Content-Type: application/json" --request POST --data '{"id": 8888, "jerseyNumber": 6, "name": "Cata COLL", "position": "Goalkeeper", "dateOfBirth": "2001-04-23"}' http://localhost:8080/players
