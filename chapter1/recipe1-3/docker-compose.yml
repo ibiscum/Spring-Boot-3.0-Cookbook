@@ -1,0 +1,9 @@
+name: recipe1-3
+services:
+
+  recipe1-3:
+    build: .
+    image: recipe1-3
+    ports:
+      - '127.0.0.1:8080:8080'
+    mem_limit: 512m
