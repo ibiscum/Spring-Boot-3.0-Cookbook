@@ -5,21 +5,21 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.2</version>
+		<version>3.5.13</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
-	<artifactId>footballauth</artifactId>
+	<artifactId>recipe2-6-footballauth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>footballauth</name>
+	<name>recipe2-6-footballauth</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>25</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
+			<artifactId>spsring-boot-starter-oauth2-authorization-server</artifactId>
 		</dependency>
 
 		<dependency>
