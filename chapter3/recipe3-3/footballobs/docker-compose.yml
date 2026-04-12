@@ -1,0 +1,11 @@
+name: recipe3-3-footballobs
+services:
+  db:
+    image: postgres:18.3-alpine3.22
+    environment:
+      POSTGRES_USER: packt
+      POSTGRES_PASSWORD: packt
+      POSTGRES_DB: football
+    ports:
+      - '127.0.0.1:5432:5432'
+    restart: always

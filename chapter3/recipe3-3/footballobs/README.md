@@ -5,7 +5,6 @@
     ./mvnw spring-boot:run
 
     curl http://localhost:8080/actuator/health
-    curl http://localhost:8080/actuator/env
-    curl http://localhost:8080/actuator/metrics
-    curl http://localhost:8080/actuator/beans
-    curl http://localhost:8080/actuator/loggers
+    watch curl http://localhost:8080/actuator/health/readiness
+    watch -n 1 -x curl --request POST -H "Content-Type: application/json" --data "1" http://localhost:8080/football
+    watch curl http://localhost:8080/actuator/health
