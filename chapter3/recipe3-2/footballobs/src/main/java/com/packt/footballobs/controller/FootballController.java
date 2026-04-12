@@ -14,13 +14,12 @@ public class FootballController {
 
     private FileLoader fileLoader;
 
-    public FootballController(FileLoader fileLoader){
+    public FootballController(FileLoader fileLoader) {
         this.fileLoader = fileLoader;
     }
 
     @GetMapping
-    public List<String> getTeams(){
+    public List<String> getTeams() {
         return fileLoader.getTeams();
     }
-    
 }

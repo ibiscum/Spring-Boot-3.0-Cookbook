@@ -9,3 +9,4 @@
     curl http://localhost:8080/actuator/metrics
     curl http://localhost:8080/actuator/beans
     curl http://localhost:8080/actuator/loggers
+    curl http://localhost:8080/actuator/football
