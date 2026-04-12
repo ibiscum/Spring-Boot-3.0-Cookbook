@@ -14,7 +14,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.packt.football.domain.Player;
@@ -26,7 +26,7 @@ class FootballControllerTest {
     @Autowired
     MockMvc mvc;
 
-    @MockBean
+    @MockitoBean
     FootballService footballService;
 
     @Test
@@ -109,7 +109,7 @@ class FootballControllerTest {
         mvc.perform(get("/football/albums/1/myplayers"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
-        
+
     }
 
     @Test
@@ -147,7 +147,7 @@ class FootballControllerTest {
         mvc.perform(get("/football/matches/1/timeline/events/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
-        
+
     }
 
     @Test
