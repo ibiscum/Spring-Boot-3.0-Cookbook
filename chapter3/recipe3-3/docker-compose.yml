@@ -1,4 +1,4 @@
-name: recipe3-3-footballobs
+name: recipe3-3
 services:
   db:
     image: postgres:18.3-alpine3.22
