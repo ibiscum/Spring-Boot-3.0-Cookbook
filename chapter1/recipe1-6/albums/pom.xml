@@ -16,7 +16,7 @@
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>
-		<spring-cloud.version>2025.1.1</spring-cloud.version>
+		<spring-cloud.version>2025.0.2</spring-cloud.version>
     <commons-lang3.version>[3.18.0,)</commons-lang3.version>
     <bouncycastle.version>[1.84,)</bouncycastle.version>
 	</properties>
@@ -38,11 +38,11 @@
 
 		<!-- Using standalone version as there is an incompatibility with Spring Boot 3.2.1 - See: https://github.com/wiremock/wiremock/issues/2395 -->
 		<dependency>
-			<groupId>com.github.tomakehurst</groupId>
-			<artifactId>wiremock-standalone</artifactId>
-			<version>3.0.1</version>
-			<scope>test</scope>
-		</dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>[3.0.3,)</version>
+ 			<scope>test</scope>
+    </dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
