@@ -2,11 +2,8 @@ package com.packt.football;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import com.packt.football.exceptions.AlreadyExistsException;
-import com.packt.football.exceptions.NotFoundException;
 import com.packt.football.model.Player;
 import com.packt.football.services.FootballService;
 
