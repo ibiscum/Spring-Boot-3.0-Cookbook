@@ -11,7 +11,7 @@ import org.testcontainers.lifecycle.Startables;
 import java.util.stream.Stream;
 
 @TestConfiguration
-@ActiveProfiles("test")
+// ActiveProfiles("test")
 public class EurekaContainerConfig {
 
     public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

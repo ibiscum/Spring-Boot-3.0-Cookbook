@@ -58,8 +58,9 @@
     <module>chapter4/recipe4-3/albums</module>
     <module>chapter4/recipe4-3/football</module>
     <module>chapter4/recipe4-3/registry</module>
-    <!--
+    
     <module>chapter4/recipe4-3-experimental/albums</module>
+    <!--
     <module>chapter4/recipe4-3-experimental/football</module>
     <module>chapter4/recipe4-3-experimental/registry</module>
     <module>chapter4/recipe4-3-new/albums</module>
