@@ -58,6 +58,7 @@
     <module>chapter4/recipe4-3/albums</module>
     <module>chapter4/recipe4-3/football</module>
     <module>chapter4/recipe4-3/registry</module>
+    <!--
     <module>chapter4/recipe4-3-experimental/albums</module>
     <module>chapter4/recipe4-3-experimental/football</module>
     <module>chapter4/recipe4-3-experimental/registry</module>
@@ -69,7 +70,7 @@
     <module>chapter4/recipe4-4/gateway</module>
     <module>chapter4/recipe4-4/registry</module>
 
-    <!--
+
     <module>chapter5/recipe5-*/*</module>
     <module>chapter6/recipe6-*/*</module>
     <module>chapter7/recipe7-*/*</module>
