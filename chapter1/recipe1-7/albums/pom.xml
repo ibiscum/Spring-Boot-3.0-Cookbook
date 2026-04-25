@@ -30,11 +30,11 @@
 
 		<!-- Using standalone version as there is an incompatibility with Spring Boot 3.2.1 - See: https://github.com/wiremock/wiremock/issues/2395 -->
 		<dependency>
-			<groupId>com.github.tomakehurst</groupId>
-			<artifactId>wiremock-standalone</artifactId>
-			<version>3.0.1</version>
-			<scope>test</scope>
-		</dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>[3.0.3,)</version>
+ 			<scope>test</scope>
+    </dependency>
 	</dependencies>
 
 	<build>
