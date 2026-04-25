@@ -6,16 +6,16 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.2</version>
+		<version>3.5.14</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
-	<artifactId>footballui</artifactId>
+	<artifactId>recipe2-6-theresmore-footballui</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>footballui</name>
+	<name>recipe2-6-theresmore-footballui</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>25</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -59,7 +59,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		
+
 	</dependencies>
 
 	<build>
@@ -82,7 +82,7 @@
 			<dependency>
 				<groupId>com.azure.spring</groupId>
 				<artifactId>spring-cloud-azure-dependencies</artifactId>
-				<version>5.7.0</version>
+				<version>6.2.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
