@@ -6,6 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<version>3.5.14</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
@@ -18,16 +19,23 @@
 		<java.version>25</java.version>
 =======
 		<version>3.2.2</version>
+=======
+		<version>3.5.14</version>
+>>>>>>> dc0d18c (8-1)
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
-	<artifactId>cards</artifactId>
+	<artifactId>recipe8-1-cards</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cards</name>
+	<name>recipe8-1-cards</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
+<<<<<<< HEAD
 		<java.version>21</java.version>
 >>>>>>> c5aaeda (8-1)
+=======
+		<java.version>25</java.version>
+>>>>>>> dc0d18c (8-1)
 	</properties>
 	<dependencies>
 		<dependency>
