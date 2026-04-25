@@ -10,45 +10,16 @@
   <packaging>pom</packaging>
 
   <modules>
-    <!-- <module>chapter1/recipe1-1</module>
-    <module>chapter1/recipe1-2</module>
-    <module>chapter1/recipe1-3</module>
-    <module>chapter1/recipe1-4</module>
-    <module>chapter1/recipe1-5</module>
-    <module>chapter1/recipe1-6</module>
-    <module>chapter1/recipe1-7</module> -->
-
-    <!-- <module>chapter2/recipe2-1/footballauth</module>
-    <module>chapter2/recipe2-2/footballauth</module>
-    <module>chapter2/recipe2-2/footballresource</module>
-    <module>chapter2/recipe2-3/footballauth</module>
-    <module>chapter2/recipe2-3/footballresource</module>
-    <module>chapter2/recipe2-4/footballauth</module>
-    <module>chapter2/recipe2-4/footballresource</module>
-    <module>chapter2/recipe2-4/footballui</module>
-    <module>chapter2/recipe2-5/footballauth</module>
-    <module>chapter2/recipe2-5/footballresource</module>
-    <module>chapter2/recipe2-5/footballui</module>
-    <module>chapter2/recipe2-6/footballauth</module>
-    <module>chapter2/recipe2-6/footballresource</module>
-    <module>chapter2/recipe2-6/footballui</module> -->
-
-    <module>chapter3/recipe3-1/footballobs</module>
-    <module>chapter3/recipe3-2/footballobs</module>
-    <module>chapter3/recipe3-3/footballobs</module>
-    <module>chapter3/recipe3-4/footballobs</module>
-    <module>chapter3/recipe3-4/footballclient</module>
-    <module>chapter3/recipe3-5/footballobs</module>
-    <module>chapter3/recipe3-5/footballclient</module>
-
-    <!--
-    <module>chapter4</module>
-    <module>chapter5</module>
-    <module>chapter6</module>
-    <module>chapter7</module>
-    <module>chapter8</module>
-    <module>chapter9</module>
-    <module>chapter10</module> -->
+    <module>chapter1/recipe1-*/*</module>
+    <module>chapter2/recipe2-*/*</module>
+    <module>chapter3/recipe3-*/*</module>
+    <module>chapter4/recipe4-*/*</module>
+    <module>chapter5/recipe5-*/*</module>
+    <module>chapter6/recipe6-*/*</module>
+    <module>chapter7/recipe7-*/*</module>
+    <module>chapter8/recipe8-*/*</module>
+    <module>chapter9/recipe9-*/*</module>
+    <module>chapter10/recipe10-*/*</module>
   </modules>
 
 </project>
