@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 echo 'Get a team'
 curl http://localhost:8080/football/team/1884823
 
