@@ -23,6 +23,8 @@
     <module>chapter2/recipe2-1/footballauth</module>
     <module>chapter2/recipe2-2/footballauth</module>
     <module>chapter2/recipe2-2/footballresource</module>
+    <module>chapter2/recipe2-3/footballauth</module>
+    <module>chapter2/recipe2-3/footballresource</module>
 
     <!--
     <module>chapter3/recipe3-*/*</module>
