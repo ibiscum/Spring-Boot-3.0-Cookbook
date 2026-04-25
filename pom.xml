@@ -34,7 +34,8 @@
     <module>chapter2/recipe2-6/footballauth</module>
     <module>chapter2/recipe2-6/footballresource</module>
     <module>chapter2/recipe2-6/footballui</module>
-    <module>chapter2/recipe2-6/theresmore</module>
+    <module>chapter2/recipe2-6/theresmore/footballresource</module>
+    <module>chapter2/recipe2-6/theresmore/footballui</module>
 
 
     <!--
