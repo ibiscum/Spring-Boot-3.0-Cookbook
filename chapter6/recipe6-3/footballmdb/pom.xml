@@ -9,9 +9,15 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
+<<<<<<<< HEAD:chapter6/recipe6-3/footballmdb/pom.xml
 	<artifactId>recipe6-3-footballmdb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>recipe6-3-footballmdb</name>
+========
+	<artifactId>recipe6-5-footballmdb</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>recipe6-5-footballmdb</name>
+>>>>>>>> c5aaeda (8-1):chapter6/recipe6-5/footballmdb/pom.xml
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>

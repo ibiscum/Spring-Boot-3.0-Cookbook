@@ -9,6 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
+<<<<<<< HEAD
+<<<<<<<< HEAD:chapter6/recipe6-5/footballmdb/pom.xml
 <<<<<<<< HEAD:chapter6/recipe6-5/footballmdb/pom.xml
 	<artifactId>recipe6-5-footballmdb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -18,6 +20,22 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>recipe6-1-footballmdb</name>
 >>>>>>>> 47c4a9f (6-1):chapter6/recipe6-1/footballmdb/pom.xml
+========
+	<artifactId>recipe6-4-footballmdb</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>recipe6-4-footballmdb</name>
+>>>>>>>> c5aaeda (8-1):chapter6/recipe6-4/footballmdb/pom.xml
+=======
+<<<<<<<< HEAD:chapter6/recipe6-3/footballmdb/pom.xml
+	<artifactId>recipe6-3-footballmdb</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>recipe6-3-footballmdb</name>
+========
+	<artifactId>recipe6-5-footballmdb</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>recipe6-5-footballmdb</name>
+>>>>>>>> c5aaeda (8-1):chapter6/recipe6-5/footballmdb/pom.xml
+>>>>>>> c5aaeda (8-1)
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>
