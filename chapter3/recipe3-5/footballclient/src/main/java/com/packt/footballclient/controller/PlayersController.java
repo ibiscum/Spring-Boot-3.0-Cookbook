@@ -12,11 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.packt.footballclient.domain.PlayerRanking;
 
-import io.micrometer.tracing.BaggageInScope;
-import io.micrometer.tracing.Tracer;
-
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/players")

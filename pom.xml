@@ -38,6 +38,12 @@
     <module>chapter2/recipe2-6/theresmore/footballui</module>
 
     <module>chapter3/recipe3-1/footballobs</module>
+    <module>chapter3/recipe3-2/footballobs</module>
+    <module>chapter3/recipe3-3/footballobs</module>
+    <module>chapter3/recipe3-4/footballclient</module>
+    <module>chapter3/recipe3-4/footballobs</module>
+    <module>chapter3/recipe3-5/footballclient</module>
+    <module>chapter3/recipe3-5/footballobs</module>
 
 
     <!--
