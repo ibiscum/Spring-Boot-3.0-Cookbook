@@ -17,11 +17,16 @@ public class CardsController {
     public Flux<Card> getCards() {
         return Flux.fromIterable(
 <<<<<<< HEAD
+<<<<<<< HEAD
             List.of(new Card("1", "WWC23", "Ivana Andres", 7), new Card("2", "WWC23", "Alexia Putellas", 1))
         );
 =======
                 List.of(new Card("1", "WWC23", "Ivana Andres", 7), new Card("2", "WWC23", "Alexia Putellas", 1)));
 >>>>>>> c5aaeda (8-1)
+=======
+            List.of(new Card("1", "WWC23", "Ivana Andres", 7), new Card("2", "WWC23", "Alexia Putellas", 1))
+        );
+>>>>>>> 2c304d1 (8-1)
     }
 
     @GetMapping("/{cardId}")
