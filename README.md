@@ -4,3 +4,7 @@
 [![Dependabot Updates](https://github.com/ibiscum/Spring-Boot-3.0-Cookbook/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/ibiscum/Spring-Boot-3.0-Cookbook/actions/workflows/dependabot/dependabot-updates)
 
 Spring Boot 3.0 Cookbook, Published by Packt
+
+## Helpers
+
+    ./mvnw test -Dspring.profiles.active=test
