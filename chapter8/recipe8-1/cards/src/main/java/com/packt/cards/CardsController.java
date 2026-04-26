@@ -16,7 +16,8 @@ public class CardsController {
     @GetMapping
     public Flux<Card> getCards() {
         return Flux.fromIterable(
-                List.of(new Card("1", "WWC23", "Ivana Andres", 7), new Card("2", "WWC23", "Alexia Putellas", 1)));
+            List.of(new Card("1", "WWC23", "Ivana Andres", 7), new Card("2", "WWC23", "Alexia Putellas", 1))
+        );
     }
 
     @GetMapping("/{cardId}")
