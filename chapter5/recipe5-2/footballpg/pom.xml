@@ -13,15 +13,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>recipe5-2-footballpg</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
-	<properties>
+
+  <properties>
 		<java.version>25</java.version>
 	</properties>
-	<dependencies>
-		<dependency>
+
+  <dependencies>
+
+  	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<dependency>
+
+  	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -49,7 +53,8 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+
+  </dependencies>
 
 	<build>
 		<plugins>
