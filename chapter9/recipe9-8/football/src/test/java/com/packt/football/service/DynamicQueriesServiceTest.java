@@ -7,7 +7,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.math.BigInteger;
+// import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +70,7 @@ class DynamicQueriesServiceTest {
         postgreSQLContainer.stop();
     }
 
-    
+
 
     @Autowired
     DynamicQueriesService dynamicQueriesService;
@@ -191,7 +191,7 @@ class DynamicQueriesServiceTest {
         List<Card> cards = albumsService.buyCards(user1.getId(), 5);
         Card card = albumsService.addCardToAlbum(cards.get(0).getId(), album1.getId());
         assertThat(card, notNullValue());
-        
+
         TradingUser user = dynamicQueriesService.findUserById(user1.getId());
         assertNotNull(user);
         assertNotNull(user.getAlbums());

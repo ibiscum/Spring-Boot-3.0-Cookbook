@@ -1,18 +1,18 @@
 package com.packt.albums;
 
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Configuration;
+// import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+// import org.springframework.web.bind.annotation.RequestParam;
 
 
 @TestConfiguration
 @RestController
 @ActiveProfiles("mock-football")
 public class MockFootballServer {
-    
+
     @GetMapping("/players")
     public String getPlayers() {
         return """
@@ -33,5 +33,5 @@ public class MockFootballServer {
                 }
             ]""";
     }
-    
+
 }

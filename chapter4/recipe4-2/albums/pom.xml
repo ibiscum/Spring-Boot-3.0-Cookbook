@@ -13,11 +13,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>recipe4-2-albums</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
+
 	<properties>
 		<java.version>25</java.version>
 		<spring-cloud.version>2025.0.2</spring-cloud.version>
+    <bouncycastle.version>[1.84,)</bouncycastle.version>
 	</properties>
-	<dependencies>
+
+  <dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
