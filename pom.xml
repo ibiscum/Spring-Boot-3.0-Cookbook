@@ -64,10 +64,11 @@
     <module>chapter5/recipe5-1/footballpg</module>
     <module>chapter5/recipe5-2/footballpg</module>
 
-    <module>chapter9/recipe9-1/football</module>
 
 
     <!--
+    <module>chapter9/recipe9-1/football</module>
+
     <module>chapter4/recipe4-3-experimental/football</module>
     <module>chapter4/recipe4-3-experimental/registry</module>
     <module>chapter4/recipe4-3-new/albums</module>

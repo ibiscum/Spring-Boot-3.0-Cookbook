@@ -2,6 +2,8 @@
 
     ./mvnw -N wrapper:wrapper -Dmaven=3.9.15
     ./mvnw clean install -U
+    ./mvnw spring-boot:build-image -Dspring-boot.build-image.cleanCache=true -Dspring-boot.build-image.docker.host=unix:///run/user/1000/docker.sock -Dspring-boot.build-image.docker.bindHostToBuilder=true
+
     ./mvnw spring-boot:run
     ./mvnw test -Dspring.profiles.active=test
 
