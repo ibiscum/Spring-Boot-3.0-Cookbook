@@ -16,7 +16,7 @@
 
     <properties>
 		<java.version>25</java.version>
-        <commons-lang3.version>[3.18.0,)s</commons-lang3.version>
+        <commons-lang3.version>[3.18.0,)</commons-lang3.version>
 	</properties>
 
     <dependencies>
