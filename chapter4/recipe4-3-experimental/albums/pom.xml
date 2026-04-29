@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>25</java.version>
 		<spring-cloud.version>2025.0.2</spring-cloud.version>
+    <bouncycastle.version>[1.84,)</bouncycastle.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,24 +27,27 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
-	   <dependency>
+	    <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-	   </dependency>
-	   
-
+	    </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>
 		<!-- Using standalone version as there is an incompatibility with Spring Boot 3.2.1 - See: https://github.com/wiremock/wiremock/issues/2395 -->
-    <dependency>
-      <groupId>org.wiremock</groupId>
-      <artifactId>wiremock-standalone</artifactId>
-      <version>3.12.1</version>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <version>3.12.1</version>
+            <scope>test</scope>
+        </dependency>
 
 		<dependency>
 			<groupId>org.testcontainers</groupId>
@@ -56,7 +60,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<dependencyManagement>
+
+    <dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
