@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>25</java.version>
 		<spring-cloud.version>2025.0.2</spring-cloud.version>
+        <bouncycastle.version>[1.84,)</bouncycastle.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -45,6 +46,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
 	</dependencies>
 
 	<dependencyManagement>
