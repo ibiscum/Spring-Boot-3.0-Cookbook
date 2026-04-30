@@ -15,7 +15,7 @@
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>
-    <tomcat.version>[10.1.54,)</tomcat.version> <!-- Replace with your target version -->
+        <tomcat.version>[10.1.54,)</tomcat.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -33,23 +33,23 @@
 			<scope>test</scope>
 		</dependency>
 
-     <dependency>
+        <dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>test</scope>
-    </dependency>
-    
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
-	
+
 	</dependencies>
 
 	<build>
