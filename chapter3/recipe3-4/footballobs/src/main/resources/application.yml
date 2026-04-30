@@ -12,11 +12,12 @@ management:
             probability: 1.0
 football:
     folder: teams
+
 spring:
     application:
         name: trading-service
     datasource:
         url: jdbc:postgresql://localhost:5432/football
-        username: packtd
-        password: packtd
+        username: packt
+        password: packt
 

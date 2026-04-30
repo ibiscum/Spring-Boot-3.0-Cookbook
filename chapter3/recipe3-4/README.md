@@ -1,5 +1,7 @@
 # Spring Boot 3.0 Cookbook - Chapter 3 - recipe3-4
 
+    docker compose up
+
     ./mvnw -N wrapper:wrapper -Dmaven=3.9.12
     ./mvnw clean install -U
     ./mvnw spring-boot:run
