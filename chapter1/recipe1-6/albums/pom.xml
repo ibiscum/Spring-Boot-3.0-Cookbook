@@ -25,6 +25,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -36,13 +37,19 @@
 			<scope>test</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
+
 		<!-- Using standalone version as there is an incompatibility with Spring Boot 3.2.1 - See: https://github.com/wiremock/wiremock/issues/2395 -->
 		<dependency>
-      <groupId>org.wiremock</groupId>
-      <artifactId>wiremock-standalone</artifactId>
-      <version>[3.0.3,)</version>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <version>[3.0.3,)</version>
  			<scope>test</scope>
-    </dependency>
+        </dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
