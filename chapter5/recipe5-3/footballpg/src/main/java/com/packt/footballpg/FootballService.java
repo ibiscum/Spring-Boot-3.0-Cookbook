@@ -2,7 +2,6 @@ package com.packt.footballpg;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,7 @@ public class FootballService {
         this.teamRepository = teamRepository;
     }
 
-    
+
     @Transactional(readOnly = true)
     public Team getTeam(Integer id) {
         TeamEntity team = teamRepository.findById(id).orElse(null);
@@ -52,19 +51,15 @@ public class FootballService {
                 .toList();
     }
 
+    @Transactional
     public Team createTeam(String name) {
-        Random random = new Random();
         TeamEntity team = new TeamEntity();
-        Integer randomId = random.nextInt();
-        if (randomId < 0) {
-            randomId = random.nextInt();
-        }
-        team.setId(randomId);
         team.setName(name);
         team = teamRepository.save(team);
         return new Team(team.getId(), team.getName(), List.of());
     }
 
+    @Transactional
     public Player updatePlayerPosition(Integer id, String position) {
         PlayerEntity player = playerRepository.findById(id).orElse(null);
         if (player == null) {

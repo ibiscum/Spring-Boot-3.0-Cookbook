@@ -13,7 +13,7 @@ echo 'Creating a Antarctica team'
 curl --request POST -H "Content-Type: application/text" -d 'Antarctica' http://localhost:8080/football/teams
 
 echo 'Updating player 377762 position to Forward'
-curl --header "Content-Type: application/text"  --request PUT --data 'Forward' http://localhost:8080/football/player/377762/position
+curl --header "Content-Type: application/text" --request PUT --data 'Forward' http://localhost:8080/football/player/377762/position
 
 echo 'Updating player 377762 position to Midfielder'
-curl --header "Content-Type: application/text"  --request PUT --data 'Midfielder' http://localhost:8080/football/player/377762/position
+curl --header "Content-Type: application/text" --request PUT --data 'Midfielder' http://localhost:8080/football/player/377762/position
