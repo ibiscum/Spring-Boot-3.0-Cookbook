@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
-	<artifactId>footballcdb</artifactId>
+	<artifactId>recipe6-8-footballcdb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>footballcdb</name>
+	<name>recipe6-8-footballcdb</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>
@@ -35,6 +35,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>cassandra</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
