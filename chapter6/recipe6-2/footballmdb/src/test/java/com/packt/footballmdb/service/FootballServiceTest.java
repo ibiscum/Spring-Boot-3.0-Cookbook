@@ -5,6 +5,8 @@ import com.packt.footballmdb.repository.Team;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+
 import org.testcontainers.mongodb.MongoDBContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Testcontainers
 class FootballServiceTest {
 
+    @SuppressWarnings("resource")
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json");
@@ -36,6 +39,11 @@ class FootballServiceTest {
     static void startContainer() throws IOException, InterruptedException {
         mongoDBContainer.start();
         importFile("teams");
+    }
+
+    @AfterAll
+    static void closeContainer() throws IOException, InterruptedException {
+        mongoDBContainer.close();
     }
 
     static void importFile(String fileName) throws IOException, InterruptedException {
@@ -131,6 +139,4 @@ class FootballServiceTest {
         Team updatedTeam = footballService.getTeam(savedTeam.getId());
         assertThat(updatedTeam.getName(), is("Venezuela"));
     }
-
-
 }
