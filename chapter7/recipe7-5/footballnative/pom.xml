@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
-	<artifactId>footballnative</artifactId>
+	<artifactId>recipe7-5-footballnative</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>footballnative</name>
+	<name>recipe7-5-footballnative</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>
