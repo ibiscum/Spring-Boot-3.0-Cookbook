@@ -9,21 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
-<<<<<<< HEAD
-<<<<<<< HEAD
 	<artifactId>recipe8-1-cards-functional</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>recipe8-1-cards-functional</name>
-=======
-	<artifactId>recipe8-1-cards</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>recipe8-1-cards</name>
->>>>>>> c5aaeda (8-1)
-=======
-	<artifactId>recipe8-1-cards-functional</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>recipe8-1-cards-functional</name>
->>>>>>> dc0d18c (8-1)
+
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>
