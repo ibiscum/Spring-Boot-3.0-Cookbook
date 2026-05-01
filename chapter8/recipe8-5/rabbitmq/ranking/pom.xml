@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.packt</groupId>
-	<artifactId>ranking</artifactId>
+	<artifactId>recipe8-5-rabbitmq-ranking</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ranking</name>
+	<name>recipe8-5-rabbitmq-ranking</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>25</java.version>
