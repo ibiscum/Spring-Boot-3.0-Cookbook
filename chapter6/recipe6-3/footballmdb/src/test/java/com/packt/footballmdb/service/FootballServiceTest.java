@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Testcontainers
 class FootballServiceTest {
 
+    @SuppressWarnings("resource")
     @Container
     @ServiceConnection
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
