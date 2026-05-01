@@ -18,7 +18,7 @@ public class FootballService {
         this.teamRepository = teamRepository;
     }
 
-    
+
     @Transactional(readOnly = true)
     public Team getTeam(Integer id) {
         TeamEntity team = teamRepository.findById(id).orElse(null);
@@ -51,6 +51,7 @@ public class FootballService {
                 .toList();
     }
 
+    @Transactional
     public Team createTeam(String name) {
         TeamEntity team = new TeamEntity();
         team.setName(name);
@@ -58,6 +59,7 @@ public class FootballService {
         return new Team(team.getId(), team.getName(), List.of());
     }
 
+    @Transactional
     public Player updatePlayerPosition(Integer id, String position) {
         PlayerEntity player = playerRepository.findById(id).orElse(null);
         if (player == null) {
