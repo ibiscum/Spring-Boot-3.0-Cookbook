@@ -64,6 +64,17 @@
     <module>chapter5/recipe5-1/footballpg</module>
     <module>chapter5/recipe5-2/footballpg</module>
 
+    <module>chapter6/recipe6-1/footballmdb</module>
+    <module>chapter6/recipe6-2/footballmdb</module>
+    <module>chapter6/recipe6-3/footballmdb</module>
+    <module>chapter6/recipe6-4/footballmdb</module>
+    <module>chapter6/recipe6-5/footballmdb</module>
+    <module>chapter6/recipe6-6/footballmdb</module>
+    <module>chapter6/recipe6-7/footballcdb</module>
+    <module>chapter6/recipe6-8/footballcdb</module>
+    <module>chapter6/recipe6-9/footballcdb</module>
+    <module>chapter6/recipe6-10/footballcdb</module>
+
     <module>chapter9/recipe9-8/football</module>
 
     <!--

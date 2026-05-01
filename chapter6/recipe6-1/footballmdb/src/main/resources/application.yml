@@ -1,8 +1,8 @@
 spring:
-    data:
-        mongodb:
-            uri: mongodb://127.0.0.1:27017/?directConnection=true
-            database: football
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/?directConnection=true
+      database: football
 logging:
   level:
     org:
