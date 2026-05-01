@@ -3,9 +3,7 @@ package com.packt.footballmdb.service;
 import com.packt.footballmdb.repository.Player;
 import com.packt.footballmdb.repository.Team;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.testcontainers.mongodb.MongoDBContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,8 +11,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-
 
 import org.testcontainers.utility.MountableFile;
 
@@ -31,38 +27,48 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Testcontainers
 class FootballServiceTest {
 
+    private static final String MONGO_USER = "football";
+    private static final String MONGO_PASSWORD = "football";
+    private static final String AUTH_DB = "admin";
+
     @SuppressWarnings("resource")
     @Container
-    @ServiceConnection
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
-            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json");
-
-    @BeforeAll
-    static void startContainer() throws IOException, InterruptedException {
-        mongoDBContainer.start();
-        importFile("teams");
-    }
+            .withEnv("MONGO_INITDB_ROOT_USERNAME", MONGO_USER)
+            .withEnv("MONGO_INITDB_ROOT_PASSWORD", MONGO_PASSWORD)
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json")
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/players.json"), "players.json")
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/matches.json"), "matches.json")
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/match_events.json"), "match_events.json");
 
     static void importFile(String fileName) throws IOException, InterruptedException {
-        org.testcontainers.containers.Container.ExecResult res = mongoDBContainer.execInContainer(
-                "mongoimport",
-                "--db=football",
-                "--collection=" + fileName,
-                "--jsonArray",
-                fileName + ".json");
-        if (res.getExitCode() > 0) {
-            throw new RuntimeException("MongoDB not properly initialized");
+        String uri = "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@127.0.0.1:27017/?directConnection=true&authSource=" + AUTH_DB + "&authMechanism=SCRAM-SHA-256";
+        org.testcontainers.containers.Container.ExecResult res = null;
+
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            res = mongoDBContainer.execInContainer(
+                    "mongoimport",
+                    "--uri=" + uri,
+                    "--db=football",
+                    "--collection=" + fileName,
+                    "--jsonArray",
+                    fileName + ".json");
+            if (res.getExitCode() == 0) {
+                return;
+            }
+            if (attempt < 10) {
+                Thread.sleep(1000);
+            }
         }
+
+        throw new RuntimeException("MongoDB not properly initialized: " + (res != null ? res.getStderr() : "unknown error"));
     }
 
     @DynamicPropertySource
     static void setMongoDbProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-    }
-
-    @AfterAll
-    static void closeContainer() {
-        mongoDBContainer.close();
+        registry.add("spring.data.mongodb.uri", () -> "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@"
+                + mongoDBContainer.getHost() + ":" + mongoDBContainer.getMappedPort(27017)
+                + "/football?directConnection=true&authSource=" + AUTH_DB);
     }
 
     @Autowired
