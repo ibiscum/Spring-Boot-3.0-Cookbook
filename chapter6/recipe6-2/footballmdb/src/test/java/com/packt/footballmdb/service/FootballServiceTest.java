@@ -2,15 +2,17 @@ package com.packt.footballmdb.service;
 
 import com.packt.footballmdb.repository.Player;
 import com.packt.footballmdb.repository.Team;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.testcontainers.mongodb.MongoDBContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.Container;
-import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
 import org.testcontainers.utility.MountableFile;
 
 import java.io.IOException;
@@ -19,13 +21,14 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @Testcontainers
 class FootballServiceTest {
 
+    @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json");
 
@@ -36,8 +39,14 @@ class FootballServiceTest {
     }
 
     static void importFile(String fileName) throws IOException, InterruptedException {
-        Container.ExecResult res = mongoDBContainer.execInContainer("mongoimport", "--db=football", "--collection=" + fileName, "--jsonArray", fileName + ".json");
-        if (res.getExitCode() > 0){
+        org.testcontainers.containers.Container.ExecResult res = mongoDBContainer.execInContainer(
+                "mongoimport",
+                "--db=football",
+                "--collection=" + fileName,
+                "--jsonArray",
+                fileName + ".json");
+
+        if (res.getExitCode() > 0) {
             throw new RuntimeException("MongoDB not properly initialized");
         }
     }
