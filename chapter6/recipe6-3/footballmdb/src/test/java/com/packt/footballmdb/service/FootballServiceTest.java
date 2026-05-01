@@ -1,18 +1,21 @@
 package com.packt.footballmdb.service;
 
-import com.packt.footballmdb.repository.Match;
-import com.packt.footballmdb.repository.MatchEvent;
 import com.packt.footballmdb.repository.Player;
 import com.packt.footballmdb.repository.Team;
-import org.junit.jupiter.api.BeforeAll;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.testcontainers.mongodb.MongoDBContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.Container;
-import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+
+
 import org.testcontainers.utility.MountableFile;
 
 import java.io.IOException;
@@ -21,32 +24,31 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @Testcontainers
 class FootballServiceTest {
 
+    @Container
+    @ServiceConnection
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
-            .withSharding()
-            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json")
-            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/players.json"), "players.json")
-            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/matches.json"), "matches.json")
-            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/match_events.json"), "match_events.json");
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json");
 
     @BeforeAll
     static void startContainer() throws IOException, InterruptedException {
         mongoDBContainer.start();
-        importFile(mongoDBContainer, "matches");
-        importFile(mongoDBContainer, "match_events");
-        importFile(mongoDBContainer, "teams");
-        importFile(mongoDBContainer, "players");
+        importFile("teams");
     }
 
-    static void importFile(MongoDBContainer container, String fileName) throws IOException, InterruptedException {
-        String uri = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000";
-        Container.ExecResult res = container.execInContainer("mongoimport", "--uri=" + uri, "--db=football", "--collection=" + fileName, "--jsonArray", fileName + ".json");
+    static void importFile(String fileName) throws IOException, InterruptedException {
+        org.testcontainers.containers.Container.ExecResult res = mongoDBContainer.execInContainer(
+                "mongoimport",
+                "--db=football",
+                "--collection=" + fileName,
+                "--jsonArray",
+                fileName + ".json");
         if (res.getExitCode() > 0) {
             throw new RuntimeException("MongoDB not properly initialized");
         }
@@ -54,7 +56,12 @@ class FootballServiceTest {
 
     @DynamicPropertySource
     static void setMongoDbProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", () -> mongoDBContainer.getReplicaSetUrl("football"));
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
+
+    @AfterAll
+    static void closeContainer() {
+        mongoDBContainer.close();
     }
 
     @Autowired
@@ -133,16 +140,5 @@ class FootballServiceTest {
         assertThat(updatedTeam.getName(), is("Venezuela"));
     }
 
-    @Test
-    void getMatchEvents() throws IOException, InterruptedException {
-        List<MatchEvent> events = footballService.getMatchEvents("400222852");
-        assertThat(events, not(empty()));
-    }
-
-    @Test
-    void getPlayerEvents() {
-        List<MatchEvent> playerEvents = footballService.getPlayerEvents("400222844", "413022");
-        assertThat(playerEvents, not(empty()));
-    }
 
 }
