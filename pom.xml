@@ -71,8 +71,11 @@
     <module>chapter6/recipe6-6/footballmdb</module>
     <module>chapter6/recipe6-7/footballcdb</module>
     <module>chapter6/recipe6-8/footballcdb</module>
+    <!--
     <module>chapter6/recipe6-9/footballcdb</module>
     <module>chapter6/recipe6-10/footballcdb</module>
+    -->
+
 
     <!-- s<module>chapter9/recipe9-8/football</module> -->
 
