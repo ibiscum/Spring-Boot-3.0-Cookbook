@@ -10,7 +10,7 @@
   <packaging>pom</packaging>
 
   <modules>
-   <!--  <module>chapter1/recipe1-1</module>
+    <module>chapter1/recipe1-1</module>
     <module>chapter1/recipe1-2</module>
     <module>chapter1/recipe1-3</module>
     <module>chapter1/recipe1-4</module>
@@ -18,7 +18,7 @@
     <module>chapter1/recipe1-6/albums</module>
     <module>chapter1/recipe1-6/football</module>
     <module>chapter1/recipe1-7/albums</module>
-    <module>chapter1/recipe1-7/football</module> -->
+    <module>chapter1/recipe1-7/football</module>
 
     <!-- <module>chapter2/recipe2-1/footballauth</module>
     <module>chapter2/recipe2-2/footballauth</module>
