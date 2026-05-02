@@ -10,7 +10,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.Container;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,13 +22,17 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Testcontainers
 class UserServiceTest {
+
+    private static final String MONGO_USER = "football";
+    private static final String MONGO_PASSWORD = "football";
+    private static final String AUTH_DB = "admin";
 
     private static String[] buildMongoEvalCommand(final String command) {
         return new String[]{
@@ -43,51 +46,74 @@ class UserServiceTest {
 
     static GenericContainer<?> mongoDBContainer1 = new GenericContainer<>("mongo:latest")
             .withNetwork(mongoDbNetwork)
-            .withCommand("mongod", "--replSet", "rs0", "--port", "27017", "--bind_ip", "localhost,mongo1")
             .withNetworkAliases("mongo1")
+            .withCommand("sh", "-c", "chmod 600 /etc/mongo/keyfile && exec mongod --replSet rs0 --port 27017 --bind_ip_all --auth --keyFile /etc/mongo/keyfile")
             .withExposedPorts(27017)
+            .waitingFor(Wait.forListeningPort())
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/mongo-keyfile"), "/etc/mongo/keyfile")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/players.json"), "players.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/matches.json"), "matches.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/match_events.json"), "match_events.json");
-    ;
+
     static GenericContainer<?> mongoDBContainer2 = new GenericContainer<>("mongo:latest")
             .withNetwork(mongoDbNetwork)
-            .withCommand("mongod", "--replSet", "rs0", "--port", "27017", "--bind_ip", "localhost,mongo2")
             .withNetworkAliases("mongo2")
-            .withExposedPorts(27017);
+            .withCommand("sh", "-c", "chmod 600 /etc/mongo/keyfile && exec mongod --replSet rs0 --port 27017 --bind_ip_all --auth --keyFile /etc/mongo/keyfile")
+            .withExposedPorts(27017)
+            .waitingFor(Wait.forListeningPort())
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/mongo-keyfile"), "/etc/mongo/keyfile");
 
     static GenericContainer<?> mongoDBContainer3 = new GenericContainer<>("mongo:latest")
             .withNetwork(mongoDbNetwork)
-            .withCommand("mongod", "--replSet", "rs0", "--port", "27017", "--bind_ip", "localhost,mongo3")
             .withNetworkAliases("mongo3")
-            .withExposedPorts(27017);
+            .withCommand("sh", "-c", "chmod 600 /etc/mongo/keyfile && exec mongod --replSet rs0 --port 27017 --bind_ip_all --auth --keyFile /etc/mongo/keyfile")
+            .withExposedPorts(27017)
+            .waitingFor(Wait.forListeningPort())
+            .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/mongo-keyfile"), "/etc/mongo/keyfile");
 
     @BeforeAll
     static void startContainer() throws IOException, InterruptedException {
-        String initCluster = """
-                rs.initiate({
-                 _id: "rs0",
-                 members: [
-                   {_id: 0, host: "mongo1"},
-                   {_id: 1, host: "mongo2"},
-                   {_id: 2, host: "mongo3"}
-                 ]
-                })
-                """;
         mongoDBContainer1.start();
         mongoDBContainer2.dependsOn(mongoDBContainer1).start();
         mongoDBContainer3.dependsOn(mongoDBContainer2).start();
-        for (int i = 0; i < 5; i++) {
+
+        String initCluster = "rs.initiate({\n"
+                + " _id: \"rs0\",\n"
+                + " members: [\n"
+                + "   {_id: 0, host: \"mongo1:27017\"},\n"
+                + "   {_id: 1, host: \"mongo2:27017\"},\n"
+                + "   {_id: 2, host: \"mongo3:27017\"}\n"
+                + " ]\n"
+                + "})";
+
+        for (int i = 0; i < 10; i++) {
             Container.ExecResult res = mongoDBContainer1.execInContainer(buildMongoEvalCommand(initCluster));
-            if (res.getExitCode() > 0) {
-                Thread.sleep(1000);
-            } else {
+            if (res.getExitCode() == 0) {
                 break;
             }
+            Thread.sleep(1000);
         }
 
-        mongoDBContainer1.waitingFor(Wait.forLogMessage("*mongos ready.*", 1));
+        for (int i = 0; i < 10; i++) {
+            Container.ExecResult res = mongoDBContainer1.execInContainer(buildMongoEvalCommand("rs.status().ok"));
+            if (res.getExitCode() == 0 && res.getStdout().trim().contains("1")) {
+                break;
+            }
+            Thread.sleep(1000);
+        }
+
+        String createUser = String.format(
+                "db.getSiblingDB('%s').createUser({user: '%s', pwd: '%s', roles: [{role: 'root', db: '%s'}]})",
+                AUTH_DB, MONGO_USER, MONGO_PASSWORD, AUTH_DB);
+        for (int i = 0; i < 10; i++) {
+            Container.ExecResult res = mongoDBContainer1.execInContainer(buildMongoEvalCommand(createUser));
+            if (res.getExitCode() == 0) {
+                break;
+            }
+            Thread.sleep(1000);
+        }
+
         importFile(mongoDBContainer1, "matches");
         importFile(mongoDBContainer1, "match_events");
         importFile(mongoDBContainer1, "teams");
@@ -95,19 +121,32 @@ class UserServiceTest {
     }
 
     static void importFile(GenericContainer<?> container, String fileName) throws IOException, InterruptedException {
-        String uri = "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/football?replicaSet=rs0";
-        Container.ExecResult res = container.execInContainer("mongoimport", "--uri=" + uri, "--db=football", "--collection=" + fileName, "--jsonArray", fileName + ".json");
+        String uri = String.format(
+                "mongodb://%s:%s@mongo1:27017,mongo2:27017,mongo3:27017/football?replicaSet=rs0&authSource=%s&authMechanism=SCRAM-SHA-256",
+                MONGO_USER,
+                MONGO_PASSWORD,
+                AUTH_DB);
+        Container.ExecResult res = container.execInContainer(
+                "mongoimport",
+                "--uri=" + uri,
+                "--db=football",
+                "--collection=" + fileName,
+                "--jsonArray",
+                fileName + ".json");
         if (res.getExitCode() > 0) {
-            throw new RuntimeException("MongoDB not properly initialized");
+            throw new RuntimeException("MongoDB not properly initialized: " + res.getStderr());
         }
     }
 
     @DynamicPropertySource
     static void setMongoDbProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", () -> {
-            String mongoUri = "mongodb://" + mongoDBContainer1.getHost() + ":" + mongoDBContainer1.getMappedPort(27017) + "/?directConnect=true";
-            return mongoUri;
-        });
+        registry.add("spring.data.mongodb.uri", () -> String.format(
+                "mongodb://%s:%s@%s:%d/football?authSource=%s&authMechanism=SCRAM-SHA-256&directConnection=true",
+                MONGO_USER,
+                MONGO_PASSWORD,
+                mongoDBContainer1.getHost(),
+                mongoDBContainer1.getMappedPort(27017),
+                AUTH_DB));
     }
 
     @Autowired
