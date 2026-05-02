@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>25</java.version>
         <testcontainers.version>2.0.5</testcontainers.version>
+        <commons-lang3.version>[3.18.0,)</commons-lang3.version>
 	</properties>
 	<dependencies>
 
@@ -32,7 +33,6 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 
 		<dependency>
