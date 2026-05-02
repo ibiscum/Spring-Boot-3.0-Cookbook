@@ -3,6 +3,7 @@ package com.packt.footballmdb.service;
 import com.packt.footballmdb.repository.Player;
 import com.packt.footballmdb.repository.Team;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.mongodb.MongoDBContainer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,14 @@ class FootballServiceTest {
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/players.json"), "players.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/matches.json"), "matches.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/match_events.json"), "match_events.json");
+
+    @BeforeAll
+    static void importFixtureData() throws IOException, InterruptedException {
+        importFile("teams");
+        importFile("players");
+        importFile("matches");
+        importFile("match_events");
+    }
 
     static void importFile(String fileName) throws IOException, InterruptedException {
         String uri = "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@127.0.0.1:27017/?directConnection=true&authSource=" + AUTH_DB + "&authMechanism=SCRAM-SHA-256";
@@ -146,6 +155,4 @@ class FootballServiceTest {
         Team updatedTeam = footballService.getTeam(savedTeam.getId());
         assertThat(updatedTeam.getName(), is("Venezuela"));
     }
-
-
 }

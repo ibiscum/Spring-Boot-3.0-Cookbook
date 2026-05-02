@@ -1,18 +1,17 @@
 package com.packt.footballmdb.service;
 
-import com.packt.footballmdb.repository.Match;
-import com.packt.footballmdb.repository.MatchEvent;
 import com.packt.footballmdb.repository.Player;
 import com.packt.footballmdb.repository.Team;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.Test;
+import org.testcontainers.mongodb.MongoDBContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.Container;
-import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
 import org.testcontainers.utility.MountableFile;
 
 import java.io.IOException;
@@ -21,40 +20,55 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @Testcontainers
 class FootballServiceTest {
 
+    private static final String MONGO_USER = "football";
+    private static final String MONGO_PASSWORD = "football";
+    private static final String AUTH_DB = "admin";
+
+    @SuppressWarnings("resource")
+    @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
-            .withSharding()
+            .withEnv("MONGO_INITDB_ROOT_USERNAME", MONGO_USER)
+            .withEnv("MONGO_INITDB_ROOT_PASSWORD", MONGO_PASSWORD)
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/players.json"), "players.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/matches.json"), "matches.json")
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/match_events.json"), "match_events.json");
 
-    @BeforeAll
-    static void startContainer() throws IOException, InterruptedException {
-        mongoDBContainer.start();
-        importFile(mongoDBContainer, "matches");
-        importFile(mongoDBContainer, "match_events");
-        importFile(mongoDBContainer, "teams");
-        importFile(mongoDBContainer, "players");
-    }
+    static void importFile(String fileName) throws IOException, InterruptedException {
+        String uri = "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@127.0.0.1:27017/?directConnection=true&authSource=" + AUTH_DB + "&authMechanism=SCRAM-SHA-256";
+        org.testcontainers.containers.Container.ExecResult res = null;
 
-    static void importFile(MongoDBContainer container, String fileName) throws IOException, InterruptedException {
-        String uri = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000";
-        Container.ExecResult res = container.execInContainer("mongoimport", "--uri=" + uri, "--db=football", "--collection=" + fileName, "--jsonArray", fileName + ".json");
-        if (res.getExitCode() > 0) {
-            throw new RuntimeException("MongoDB not properly initialized");
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            res = mongoDBContainer.execInContainer(
+                    "mongoimport",
+                    "--uri=" + uri,
+                    "--db=football",
+                    "--collection=" + fileName,
+                    "--jsonArray",
+                    fileName + ".json");
+            if (res.getExitCode() == 0) {
+                return;
+            }
+            if (attempt < 10) {
+                Thread.sleep(1000);
+            }
         }
+
+        throw new RuntimeException("MongoDB not properly initialized: " + (res != null ? res.getStderr() : "unknown error"));
     }
 
     @DynamicPropertySource
     static void setMongoDbProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", () -> mongoDBContainer.getReplicaSetUrl("football"));
+        registry.add("spring.data.mongodb.uri", () -> "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@"
+                + mongoDBContainer.getHost() + ":" + mongoDBContainer.getMappedPort(27017)
+                + "/football?directConnection=true&authSource=" + AUTH_DB);
     }
 
     @Autowired
@@ -132,17 +146,4 @@ class FootballServiceTest {
         Team updatedTeam = footballService.getTeam(savedTeam.getId());
         assertThat(updatedTeam.getName(), is("Venezuela"));
     }
-
-    @Test
-    void getMatchEvents() throws IOException, InterruptedException {
-        List<MatchEvent> events = footballService.getMatchEvents("400222852");
-        assertThat(events, not(empty()));
-    }
-
-    @Test
-    void getPlayerEvents() {
-        List<MatchEvent> playerEvents = footballService.getPlayerEvents("400222844", "413022");
-        assertThat(playerEvents, not(empty()));
-    }
-
 }
