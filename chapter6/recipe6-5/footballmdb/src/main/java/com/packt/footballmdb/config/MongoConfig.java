@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -41,6 +42,11 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Bean
     MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
         return new MongoTransactionManager(dbFactory);
+    }
+
+    @Bean
+    TransactionTemplate transactionTemplate(MongoTransactionManager transactionManager) {
+        return new TransactionTemplate(transactionManager);
     }
 }
 

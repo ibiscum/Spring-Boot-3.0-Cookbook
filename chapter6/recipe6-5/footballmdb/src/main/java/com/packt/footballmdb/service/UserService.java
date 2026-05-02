@@ -11,8 +11,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.result.UpdateResult;
 import com.packt.footballmdb.repository.Card;
 import com.packt.footballmdb.repository.CardRepository;
@@ -24,17 +25,22 @@ import com.packt.footballmdb.repository.UserRepository;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private PlayerRepository playersRepository;
-    private CardRepository cardsRepository;
-    private MongoTemplate mongoTemplate;
+    private static final int MAX_TRANSACTION_RETRIES = 3;
+
+    private final UserRepository userRepository;
+    private final PlayerRepository playersRepository;
+    private final CardRepository cardsRepository;
+    private final MongoTemplate mongoTemplate;
+    private final TransactionTemplate transactionTemplate;
 
     public UserService(UserRepository userRepository, PlayerRepository playersRepository,
-            CardRepository cardsRepository, MongoTemplate mongoTemplate) {
+            CardRepository cardsRepository, MongoTemplate mongoTemplate,
+            TransactionTemplate transactionTemplate) {
         this.userRepository = userRepository;
         this.playersRepository = playersRepository;
         this.cardsRepository = cardsRepository;
         this.mongoTemplate = mongoTemplate;
+        this.transactionTemplate = transactionTemplate;
     }
 
     public Integer buyTokens(String userId, Integer tokens) {
@@ -45,29 +51,52 @@ public class UserService {
         return (int) result.getModifiedCount();
     }
 
-    @Transactional()
     public Integer buyCards(String userId, Integer count) {
-        Optional<User> userOpt = userRepository.findById(userId);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            List<Player> availablePlayers = getAvailablePlayers();
-            Random random = new Random();
-            if (user.getTokens() >= count) {
-                user.setTokens(user.getTokens() - count);
-            } else {
-                throw new RuntimeException("Not enough tokens");
+        for (int attempt = 1; attempt <= MAX_TRANSACTION_RETRIES; attempt++) {
+            try {
+                return transactionTemplate.execute(status -> {
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new RuntimeException("User not found"));
+                    if (user.getTokens() < count) {
+                        throw new RuntimeException("Not enough tokens");
+                    }
+
+                    List<Player> availablePlayers = getAvailablePlayers();
+                    Random random = new Random();
+                    user.setTokens(user.getTokens() - count);
+
+                    List<Card> cards = Stream.generate(() -> {
+                        Card card = new Card();
+                        card.setOwner(user);
+                        card.setPlayer(availablePlayers.get(random.nextInt(0, availablePlayers.size())));
+                        return card;
+                    }).limit(count).toList();
+
+                    List<Card> savedCards = cardsRepository.saveAll(cards);
+                    userRepository.save(user);
+                    return savedCards.size();
+                });
+            } catch (RuntimeException ex) {
+                if (!isRetryableTransactionException(ex) || attempt == MAX_TRANSACTION_RETRIES) {
+                    throw ex;
+                }
             }
-            List<Card> cards = Stream.generate(() -> {
-                Card card = new Card();
-                card.setOwner(user);
-                card.setPlayer(availablePlayers.get(random.nextInt(0, availablePlayers.size())));
-                return card;
-            }).limit(count).toList();
-            List<Card> savedCards = cardsRepository.saveAll(cards);
-            userRepository.save(user);
-            return savedCards.size();
         }
-        return 0;
+        throw new RuntimeException("Failed to complete buyCards transaction after retries");
+    }
+
+    private boolean isRetryableTransactionException(Throwable throwable) {
+        Throwable cause = throwable;
+        while (cause != null) {
+            if (cause instanceof MongoException mongoException) {
+                if (mongoException.hasErrorLabel(MongoException.TRANSIENT_TRANSACTION_ERROR_LABEL)
+                        || mongoException.hasErrorLabel(MongoException.UNKNOWN_TRANSACTION_COMMIT_RESULT_LABEL)) {
+                    return true;
+                }
+            }
+            cause = cause.getCause();
+        }
+        return false;
     }
 
     @Cacheable(value = "availablePlayers")
