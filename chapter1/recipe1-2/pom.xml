@@ -15,8 +15,9 @@
 	<description>Demo project for Spring Boot 3 Cookbook</description>
 	<properties>
 		<java.version>25</java.version>
-    <tomcat.version>[10.1.54,)</tomcat.version> <!-- Replace with your target version -->
+        <tomcat.version>[10.1.54,)</tomcat.version> <!-- Replace with your target version -->
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -28,7 +29,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.17</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>

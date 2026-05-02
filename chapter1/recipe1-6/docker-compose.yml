@@ -5,12 +5,12 @@ services:
     build: ./albums
     image: recipe1-6-albums
     ports:
-      - '8081:8080'
+      - '127.0.0.1:8081:8080'
     mem_limit: 512m
 
   recipe1-6-football:
     build: ./football
     image: recipe1-6-football
     ports:
-      - '8080:8080'
+      - '127.0.0.1:8080:8080'
     mem_limit: 512m
