@@ -16,6 +16,7 @@ class FootballmdbApplicationTests {
     private static final String MONGO_PASSWORD = "football";
     private static final String AUTH_DB = "admin";
 
+    @SuppressWarnings("resource")
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
             .withEnv("MONGO_INITDB_ROOT_USERNAME", MONGO_USER)

@@ -2,5 +2,3 @@
 
     ./mvnw -N wrapper:wrapper -Dmaven=3.9.15
     ./mvnw spring-boot:run -Dspring-boot.run.arguments=--server.port=8081
-
-
