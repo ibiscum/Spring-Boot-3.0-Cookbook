@@ -30,38 +30,60 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Testcontainers
 class FootballServiceTest {
 
+    private static final String MONGO_USER = "football";
+    private static final String MONGO_PASSWORD = "football";
+    private static final String AUTH_DB = "admin";
+
     @SuppressWarnings("resource")
     @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo")
+    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest")
+            .withEnv("MONGO_INITDB_ROOT_USERNAME", MONGO_USER)
+            .withEnv("MONGO_INITDB_ROOT_PASSWORD", MONGO_PASSWORD)
             .withCopyFileToContainer(MountableFile.forClasspathResource("mongo/teams.json"), "teams.json");
 
     @BeforeAll
-    static void startContainer() throws IOException, InterruptedException {
-        mongoDBContainer.start();
+    static void setupContainer() throws IOException, InterruptedException {
         importFile("teams");
     }
 
-    @AfterAll
-    static void closeContainer() throws IOException, InterruptedException {
-        mongoDBContainer.close();
-    }
-
     static void importFile(String fileName) throws IOException, InterruptedException {
-        org.testcontainers.containers.Container.ExecResult res = mongoDBContainer.execInContainer(
-                "mongoimport",
-                "--db=football",
-                "--collection=" + fileName,
-                "--jsonArray",
-                fileName + ".json");
+        org.testcontainers.containers.Container.ExecResult res = null;
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            res = mongoDBContainer.execInContainer(
+                    "mongoimport",
+                    "--username=" + MONGO_USER,
+                    "--password=" + MONGO_PASSWORD,
+                    "--authenticationDatabase=" + AUTH_DB,
+                    "--authenticationMechanism=SCRAM-SHA-256",
+                    "--db=football",
+                    "--collection=" + fileName,
+                    "--jsonArray",
+                    "/" + fileName + ".json",
+                    "--host=127.0.0.1",
+                    "--port=27017");
 
-        if (res.getExitCode() > 0) {
-            throw new RuntimeException("MongoDB not properly initialized");
+            if (res.getExitCode() == 0) {
+                return;
+            }
+            if (attempt < 10) {
+                Thread.sleep(1000);
+            }
         }
+
+        throw new RuntimeException("MongoDB not properly initialized: " + res.getStderr());
     }
 
     @DynamicPropertySource
     static void setMongoDbProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+        String uri = String.format(
+                "mongodb://%s:%s@%s:%d/football?authSource=%s&authMechanism=SCRAM-SHA-256&directConnection=true",
+                MONGO_USER,
+                MONGO_PASSWORD,
+                mongoDBContainer.getHost(),
+                mongoDBContainer.getMappedPort(27017),
+                AUTH_DB);
+        registry.add("spring.data.mongodb.uri", () -> uri);
+        registry.add("spring.mongodb.uri", () -> uri);
     }
 
     @Autowired
