@@ -20,7 +20,9 @@
     <module>chapter1/recipe1-7/albums</module>
     <module>chapter1/recipe1-7/football</module>
 
-    <!-- <module>chapter2/recipe2-1/footballauth</module>
+    <module>chapter2/recipe2-1/footballauth</module>
+    <!--
+
     <module>chapter2/recipe2-2/footballauth</module>
     <module>chapter2/recipe2-2/footballresource</module>
     <module>chapter2/recipe2-3/footballauth</module>
