@@ -21,12 +21,14 @@
     <module>chapter1/recipe1-7/football</module>
 
     <module>chapter2/recipe2-1/footballauth</module>
-    <!--
-
     <module>chapter2/recipe2-2/footballauth</module>
     <module>chapter2/recipe2-2/footballresource</module>
     <module>chapter2/recipe2-3/footballauth</module>
     <module>chapter2/recipe2-3/footballresource</module>
+
+    <module>chapter3/recipe3-1/footballobs</module>
+
+    <!--
     <module>chapter2/recipe2-4/footballauth</module>
     <module>chapter2/recipe2-4/footballresource</module>
     <module>chapter2/recipe2-4/footballui</module>
@@ -39,7 +41,7 @@
     <module>chapter2/recipe2-6/theresmore/footballresource</module>
     <module>chapter2/recipe2-6/theresmore/footballui</module> -->
 
-   <!--  <module>chapter3/recipe3-1/footballobs</module>
+   <!--
     <module>chapter3/recipe3-2/footballobs</module>
     <module>chapter3/recipe3-3/footballobs</module>
     <module>chapter3/recipe3-4/footballclient</module>
@@ -53,7 +55,8 @@
     <module>chapter3/recipe3-8/footballclient</module>
     <module>chapter3/recipe3-8/footballobs</module> -->
 
-   <!--  <module>chapter4/recipe4-1/registry</module>
+   <!--
+    s<module>chapter4/recipe4-1/registry</module>
     <module>chapter4/recipe4-2/albums</module>
     <module>chapter4/recipe4-2/football</module>
     <module>chapter4/recipe4-2/registry</module>
