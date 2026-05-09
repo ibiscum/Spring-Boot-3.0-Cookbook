@@ -10,6 +10,12 @@ management:
   tracing:
     sampling:
       probability: 1.0
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces
+
 spring:
   application:
     name: trading-service

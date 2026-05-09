@@ -7,10 +7,28 @@ services:
       POSTGRES_PASSWORD: packt
       POSTGRES_DB: football
     ports:
-      - '127.0.0.1:5432:5432'
+      - '5432:5432'
     restart: always
   zipkin:
     image: openzipkin/zipkin:3-amd64
     ports:
-      - '127.0.0.1:9411:9411'
+      - '9411:9411'
     restart: always
+    networks:
+      - observability
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - '4318:4318'   # OTLP HTTP
+      - '4317:4317'   # OTLP gRPC
+    depends_on:
+      - zipkin
+    networks:
+      - observability
+
+networks:
+  observability:
+    driver: bridge
