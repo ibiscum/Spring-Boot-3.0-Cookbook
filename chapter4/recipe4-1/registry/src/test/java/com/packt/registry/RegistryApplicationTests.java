@@ -9,5 +9,4 @@ class RegistryApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
