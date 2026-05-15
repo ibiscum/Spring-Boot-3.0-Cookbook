@@ -8,8 +8,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.client.result.UpdateResult;
-import com.packt.footballmdb.repository.Match;
+// import com.mongodb.client.result.UpdateResult;
+// import com.packt.footballmdb.repository.Match;
 import com.packt.footballmdb.repository.MatchEvent;
 import com.packt.footballmdb.repository.MatchEventRepository;
 import com.packt.footballmdb.repository.MatchRepository;
@@ -25,14 +25,14 @@ public class FootballService {
     private MongoTemplate mongoTemplate;
     private PlayerRepository playerRepository;
     private MatchEventRepository matchEventRepository;
-    private MatchRepository matchRepository;
+    // private MatchRepository matchRepository;
 
     public FootballService(TeamRepository teamRepository, MongoTemplate mongoTemplate, PlayerRepository playerRepository, MatchEventRepository matchEventRepository, MatchRepository matchRepository) {
         this.teamRepository = teamRepository;
         this.mongoTemplate = mongoTemplate;
         this.playerRepository = playerRepository;
         this.matchEventRepository = matchEventRepository;
-        this.matchRepository = matchRepository;
+        // this.matchRepository = matchRepository;
     }
 
     public Team getTeam(String id) {

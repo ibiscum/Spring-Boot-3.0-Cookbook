@@ -3,7 +3,7 @@ package com.packt.footballmdb.repository;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Sharded;
+// import org.springframework.data.mongodb.core.mapping.Sharded;
 
 @Document(collection = "cards")
 public class Card {
@@ -39,5 +39,5 @@ public class Card {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-    
+
 }

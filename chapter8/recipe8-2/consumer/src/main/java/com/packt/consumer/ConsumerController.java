@@ -43,18 +43,17 @@ public class ConsumerController {
     @GetMapping("/error")
     public Mono<String> getFailedRequest() {
         return webClient.get()
-                .uri("/invalidpath")
-                .exchangeToMono(response -> {
-                    if (response.statusCode()
-                            .equals(HttpStatus.NOT_FOUND))
-                        return Mono.just("Remote server returned 404");
-                    else if (response.statusCode()
-                            .equals(HttpStatus.INTERNAL_SERVER_ERROR))
-                        return Mono.just("Remote server returned 500: "
+            .uri("/invalidpath")
+            .exchangeToMono(response -> {
+            if (response.statusCode()
+                .equals(HttpStatus.NOT_FOUND))
+                return Mono.just("Remote server returned 404");
+            else if (response.statusCode()
+                .equals(HttpStatus.INTERNAL_SERVER_ERROR))
+                return Mono.just("Remote server returned 500: "
                                 + response.bodyToMono(String.class));
-                    else
-                        return response.bodyToMono(String.class);
-                });
+            else
+                return response.bodyToMono(String.class);
+        });
     }
-
 }

@@ -23,7 +23,7 @@ public class FootballService {
     private MongoTemplate mongoTemplate;
     private PlayerRepository playerRepository;
     private MatchEventRepository matchEventRepository;
-    private MatchRepository matchRepository;
+    // private MatchRepository matchRepository;
 
     public FootballService(TeamRepository teamRepository, MongoTemplate mongoTemplate, PlayerRepository playerRepository, MatchEventRepository matchEventRepository, MatchRepository matchRepository) {
         this.teamRepository = teamRepository;
