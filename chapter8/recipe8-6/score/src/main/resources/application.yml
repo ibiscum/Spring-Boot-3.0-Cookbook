@@ -1,5 +1,6 @@
 server:
   port: 8082
+
 management:
   endpoints:
     web:
@@ -34,4 +35,3 @@ spring:
           # bindingRoutingKey: football.goal.#
           # exchangeType: direct
           # binder: rabbit
-
