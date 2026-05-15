@@ -1,5 +1,8 @@
+
+
 server:
   port: 8081
+
 management:
   endpoints:
     web:
@@ -8,13 +11,11 @@ management:
 spring:
   application:
     name: timeline
-    
   rabbitmq:
     host: localhost
     username: packt
     password: packt
     port: 5672
-
   cloud:
     stream:
       # rabbit:
