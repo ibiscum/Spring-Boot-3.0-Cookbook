@@ -16,11 +16,9 @@
 
 	<properties>
 		<java.version>25</java.version>
-    <tomcat.version>[10.1.54,)</tomcat.version> <!-- Replace with your target version -->
-    <nimbus-jose-jwt.version>[10.0.2,)</nimbus-jose-jwt.version>
 	</properties>
 
-  <dependencies>
+    <dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
