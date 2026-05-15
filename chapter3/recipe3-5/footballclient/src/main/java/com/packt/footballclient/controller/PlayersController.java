@@ -1,14 +1,13 @@
-package com.packt.footballclient.controller;
+// package com.packt.footballclient.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.packt.footballclient.domain.PlayerRanking;
 
@@ -18,12 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/players")
 public class PlayersController {
 
-    private RestTemplate restTemplate;
+    private final RestClient restClient;
 
     private static final Logger logger = LoggerFactory.getLogger(PlayersController.class);
 
-    public PlayersController(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    public PlayersController(RestClient.Builder restClientBuilder) {
+        this.restClient = restClientBuilder.build();
     }
 
     @GetMapping
@@ -36,8 +35,12 @@ public class PlayersController {
                 "Jana Fernández", "Jennifer Hermoso", "Kheira Hamraoui", "Leila Ouahabi", "Lieke Martens",
                 "Ludmila da Silva", "Mariona Caldentey", "Martens", "Melanie Serrano", "Misa Rodríguez",
                 "Patri Guijarro", "Patri López", "Pereira", "Sandra Paños");
+
         return players.stream().map(player -> {
-            int ranking = this.restTemplate.getForObject(url + "/" + player, int.class);
+            int ranking = this.restClient.get()
+                    .uri(url + "/" + player)
+                    .retrieve()
+                    .body(Integer.class);
             return new PlayerRanking(player, ranking);
         }).collect(Collectors.toList());
     }
