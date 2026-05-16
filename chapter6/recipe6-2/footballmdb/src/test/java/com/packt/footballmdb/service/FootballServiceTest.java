@@ -5,6 +5,7 @@ import com.packt.footballmdb.repository.Team;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
+import java.util.Objects;
 // import org.junit.jupiter.api.AfterAll;
 
 import org.testcontainers.mongodb.MongoDBContainer;
@@ -70,7 +71,12 @@ class FootballServiceTest {
             }
         }
 
-        throw new RuntimeException("MongoDB not properly initialized: " + res.getStderr());
+        if (res == null) {
+            throw new RuntimeException("MongoDB not properly initialized: Response object is null");
+        }
+
+        String stderr = Objects.requireNonNullElse(res.getStderr(), "No stderr output available");
+        throw new RuntimeException("MongoDB not properly initialized: " + stderr);
     }
 
     @DynamicPropertySource

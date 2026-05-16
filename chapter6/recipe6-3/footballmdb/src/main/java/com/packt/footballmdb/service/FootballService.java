@@ -30,7 +30,7 @@ public class FootballService {
         this.mongoTemplate = mongoTemplate;
         this.playerRepository = playerRepository;
         this.matchEventRepository = matchEventRepository;
-        this.matchRepository = matchRepository;
+        // this.matchRepository = matchRepository;
     }
 
     public Team getTeam(String id) {

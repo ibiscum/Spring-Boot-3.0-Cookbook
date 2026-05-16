@@ -2,17 +2,19 @@ package com.packt.footballmdb.service;
 
 import com.packt.footballmdb.repository.Card;
 import com.packt.footballmdb.repository.User;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.Container;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Testcontainers;
+// import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.containers.Container;
 import org.testcontainers.utility.MountableFile;
 
 import java.io.IOException;
@@ -27,7 +29,6 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@Testcontainers
 class UserServiceTest {
 
     private static final String MONGO_USER = "football";
@@ -118,6 +119,25 @@ class UserServiceTest {
         importFile(mongoDBContainer1, "match_events");
         importFile(mongoDBContainer1, "teams");
         importFile(mongoDBContainer1, "players");
+    }
+
+    @AfterAll
+    static void stopContainer() {
+        if (mongoDBContainer1 != null) {
+            mongoDBContainer1.close();
+        }
+
+        if (mongoDBContainer2 != null) {
+            mongoDBContainer2.close();
+        }
+
+        if (mongoDBContainer3 != null) {
+            mongoDBContainer3.close();
+        }
+
+        if (mongoDbNetwork != null) {
+            mongoDbNetwork.close();
+        }
     }
 
     static void importFile(GenericContainer<?> container, String fileName) throws IOException, InterruptedException {

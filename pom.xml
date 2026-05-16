@@ -76,13 +76,14 @@
     <module>chapter4/recipe4-3-experimental/albums</module> -->
 
     <!-- <module>chapter5/recipe5-1/footballpg</module>
-    <module>chapter5/recipe5-2/footballpg</module> -->
+    <module>chapter5/recipe5-2/footballpg</module>
 
     <module>chapter6/recipe6-1/footballmdb</module>
     <module>chapter6/recipe6-2/footballmdb</module>
     <module>chapter6/recipe6-3/footballmdb</module>
     <module>chapter6/recipe6-4/footballmdb</module>
     <module>chapter6/recipe6-5/footballmdb</module>
+    -->
     <!--
     <module>chapter6/recipe6-6/footballmdb</module>
     <module>chapter6/recipe6-7/footballcdb</module>
