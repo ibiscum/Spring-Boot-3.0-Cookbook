@@ -7,8 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-// import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -17,63 +16,49 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	@Order(1)
-	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        // Ersetzt applyDefaultSecurity(http)
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer();
+    @Bean
+    @Order(1)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-        .with(authorizationServerConfigurer, (authorizationServer) ->
-            authorizationServer
-                .oidc(Customizer.withDefaults())	// Aktiviert OpenID Connect 1.0
-        )
-        .authorizeHttpRequests((authorize) ->
-            authorize
-                .anyRequest().authenticated()
-        )
-        .authorizeHttpRequests((authorize) ->
-            authorize
-                .anyRequest().authenticated()
-        )
-        // Standard-Exception-Handling für den Auth-Server
-        .exceptionHandling((exceptions) -> exceptions
-            .defaultAuthenticationEntryPointFor(
-                new LoginUrlAuthenticationEntryPoint("/login"),
-                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+        // 1. NEU: Instanzieren Sie den Configurer manuell, um auf seine Routen-Matcher zuzugreifen
+        OAuth2AuthorizationServerConfigurer authServerConfigurer =
+                new OAuth2AuthorizationServerConfigurer();
+
+        http
+            // 2. Grenzt diese Kette exklusiv auf die vordefinierten OAuth2-Endpunkte ein
+            .securityMatcher(authServerConfigurer.getEndpointsMatcher())
+
+            // 3. Übergibt den vorkonfigurierten Configurer per Lambda-DSL an die Kette
+            .with(authServerConfigurer, authorizationServer -> authorizationServer
+                .oidc(Customizer.withDefaults()) // Aktiviert OpenID Connect 1.0
             )
-        );
+            .authorizeHttpRequests(authorize -> authorize
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(Customizer.withDefaults())
+            )
+            .exceptionHandling(exceptions -> exceptions
+                .defaultAuthenticationEntryPointFor(
+                    new LoginUrlAuthenticationEntryPoint("/login"),
+                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                )
+            );
 
-        // http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-		// 	.oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
-		// http
-		// 	// Redirect to the OAuth 2.0 Login endpoint when not authenticated
-		// 	// from the authorization endpoint
-		// 	.exceptionHandling((exceptions) -> exceptions
-		// 		.defaultAuthenticationEntryPointFor(
-		// 			new LoginUrlAuthenticationEntryPoint("/oauth2/authorization/football-gmail"),
-		// 			new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-		// 		)
-		// 	)
-		// 	// Accept access tokens for User Info and/or Client Registration
-		// 	.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
 
-		return http.build();
-	}
+    @Bean
+    @Order(2)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+            // Kette 2 fungiert als globales "Catch-All" für Standard-Webseiten und Logins
+            .authorizeHttpRequests(authorize -> authorize
+                .anyRequest().authenticated()
+            )
+            .formLogin(Customizer.withDefaults())
+            .oauth2Login(Customizer.withDefaults());
 
-	@Bean
-	@Order(2)
-	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
-			throws Exception {
-		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.anyRequest().authenticated()
-			)
-			// OAuth2 Login handles the redirect to the OAuth 2.0 Login endpoint
-			// from the authorization server filter chain
-			.oauth2Login(Customizer.withDefaults());
-
-		return http.build();
-	}
-
+        return http.build();
+    }
 }
