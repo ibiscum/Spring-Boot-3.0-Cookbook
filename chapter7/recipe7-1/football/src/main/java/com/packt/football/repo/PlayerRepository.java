@@ -4,11 +4,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
-import java.util.Optional;
 
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Integer> {
     List<PlayerEntity> findByDateOfBirth(LocalDate dateOfBirth);
@@ -26,9 +26,15 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Integer> {
 
     List<PlayerEntity> findByNameLike(String name);
 
-    @Procedure("FIND_PLAYERS_WITH_MORE_THAN_N_MATCHES")
+    @Procedure(value = "FIND_PLAYERS_WITH_MORE_THAN_N_MATCHES", outputParameterName = "")
     int getTotalPlayersWithMoreThanNMatches(int num_matches);
 
-     @Query("SELECT p FROM PlayerEntity p JOIN FETCH p.team WHERE p.id = ?1")
+    // @Query(value = "SELECT FIND_PLAYERS_WITH_MORE_THAN_N_MATCHES(:numMatches)", nativeQuery = true)
+    // int getTotalPlayersWithMoreThanNMatches(@Param("numMatches") int numMatches);
+
+    // @Query(value = "CALL FIND_PLAYERS_WITH_MORE_THAN_N_MATCHES(?, :numMatches)", nativeQuery = true)
+    // int getTotalPlayersWithMoreThanNMatches(@Param("numMatches") int numMatches);
+
+    @Query("SELECT p FROM PlayerEntity p JOIN FETCH p.team WHERE p.id = ?1")
     Optional<PlayerEntity> findByIdWithTeam(Integer teamId);
 }

@@ -20,8 +20,11 @@ import io.micrometer.observation.ObservationRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+
+// import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(FootballController.class)
@@ -30,19 +33,19 @@ class FootballControllerMvcTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private FileLoader fileLoader;
 
-    @MockBean
+    @MockitoBean
     private TradingService tradingService;
 
-    @MockBean
+    @MockitoBean
     private ObservationRegistry observationRegistry;
 
-    @MockBean
+    @MockitoBean
     private DataService dataService;
 
-    @MockBean
+    @MockitoBean
     private AuctionService auctionService;
 
     @BeforeEach

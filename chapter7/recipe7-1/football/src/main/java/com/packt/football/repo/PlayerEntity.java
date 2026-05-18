@@ -32,7 +32,7 @@ public class PlayerEntity {
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<CardEntity> cards;
-    
+
     private Integer height;
     private Integer weight;
 
@@ -99,5 +99,4 @@ public class PlayerEntity {
     public void setWeight(Integer weight) {
         this.weight = weight;
     }
-
 }

@@ -17,18 +17,49 @@
 #
 # It extends the default configuration from docker-compose.yml to run the
 # zipkin-cassandra container instead of the zipkin-mysql container.
-
-version: '2.4'
-
+name: ch7-recipe7-1-docker-compose
 services:
-  zipkin_storage:
-    image: ghcr.io/openzipkin/zipkin-mysql:${TAG:-latest}
-    container_name: mysql
+  grafana:
+    image: grafana/grafana:main-distroless-slim
+    depends_on:
+      - prometheus
+    ports:
+      - '127.0.0.1:3000:3000'
+  postgresql:
+    image: postgres:16.14-alpine3.23
+    container_name: football-db
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=football
+      - POSTGRES_USER=packt
+      - POSTGRES_PASSWORD=packt
+    ports:
+      - '127.0.0.1:5432:5432'
+    restart: unless-stopped
+
+  prometheus:
+    image: cleanstart/prometheus:3.11.0-arm64
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - '127.0.0.1:9090:9090'
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    user: "0:0"
 
   # Use Cassandra instead of in-memory storage
   zipkin:
-    # slim doesn't include Cassandra support, so switch to the larger image
     image: ghcr.io/openzipkin/zipkin:${TAG:-latest}
+    # Uncomment to enable request logging (TRACE shows query values)
+    # command: --logging.level.com.datastax.oss.driver.internal.core.tracker.RequestLogger=TRACE
+    depends_on:
+      zipkin_storage:
+        condition: service_healthy
     environment:
       - STORAGE_TYPE=mysql
       - MYSQL_HOST=zipkin_storage
@@ -37,30 +68,11 @@ services:
       - MYSQL_PASS=zipkin
       - JAVA_OPTS=-Xms2g -Xmx2g -XX:+ExitOnOutOfMemoryError
     ports:
-      - 9411:9411
-    # Uncomment to enable request logging (TRACE shows query values)
-    # command: --logging.level.com.datastax.oss.driver.internal.core.tracker.RequestLogger=TRACE
-    depends_on:
-      zipkin_storage:
-        condition: service_healthy
-  postgresql:
-    image: postgres:latest
-    environment:
-      - POSTGRES_USER=packt
-      - POSTGRES_PASSWORD=packt
-    ports:
-      - 5432:5432
-  
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - 9090:9090
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-  
-  grafana:
-    image: grafana/grafana
-    ports:
-      - 3000:3000
-    depends_on:
-      - prometheus
+      - '127.0.0.1:9411:9411'
+  zipkin_storage:
+    image: ghcr.io/openzipkin/zipkin-mysql:${TAG:-latest}
+    container_name: mysql
+
+volumes:
+  prometheus_data:
+  postgres_data:
