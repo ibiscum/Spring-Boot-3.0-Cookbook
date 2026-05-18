@@ -46,8 +46,10 @@
     <module>chapter3/recipe3-6/footballclient</module>
     <module>chapter3/recipe3-6/footballobs</module>
 
+    <module>chapter7/recipe7-1/football</module>
+
+
     <!--
-    <module>chapter3/recipe3-7/footballclient</module>
     <module>chapter3/recipe3-7/footballobs</module>
     <module>chapter3/recipe3-8/footballclient</module>
     <module>chapter3/recipe3-8/footballobs</module>

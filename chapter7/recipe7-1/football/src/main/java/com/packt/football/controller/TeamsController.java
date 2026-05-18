@@ -44,11 +44,9 @@ public class TeamsController {
         return footballService.createTeam(name);
     }
 
-
-
     @GetMapping("/{position}/count")
     public List<TeamPlayers> getNumberOfPlayersByPosition(@PathVariable String position) {
         return footballService.getNumberOfPlayersByPosition(position);
     }
-    
+
 }

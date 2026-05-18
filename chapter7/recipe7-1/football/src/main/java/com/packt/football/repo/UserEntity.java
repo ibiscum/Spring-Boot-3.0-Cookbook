@@ -56,5 +56,4 @@ public class UserEntity {
     public void setOwnedAlbums(Set<AlbumEntity> ownedAlbums) {
         this.ownedAlbums = ownedAlbums;
     }
-    
 }

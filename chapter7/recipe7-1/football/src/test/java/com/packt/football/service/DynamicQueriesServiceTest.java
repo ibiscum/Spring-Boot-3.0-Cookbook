@@ -1,18 +1,13 @@
 package com.packt.football.service;
 
+import com.packt.football.config.FootballContainersConfig;
 import com.packt.football.domain.*;
 import com.packt.football.repo.MatchEventEntity;
 import com.packt.football.repo.PlayerEntity;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,30 +19,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 @SpringBootTest
-@Testcontainers
-@ContextConfiguration(initializers = DynamicQueriesServiceTest.Initializer.class)
+@Import(FootballContainersConfig.class)
 class DynamicQueriesServiceTest {
-
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("football")
-            .withUsername("football")
-            .withPassword("football");
-
-    static class Initializer
-            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                            "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                            "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                            "spring.datasource.password=" + postgreSQLContainer.getPassword())
-                    .applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
-
-    @BeforeAll
-    public static void startContainer() {
-        postgreSQLContainer.start();
-    }
 
     @Autowired
     DynamicQueriesService dynamicQueriesService;
@@ -71,8 +44,8 @@ class DynamicQueriesServiceTest {
                 Optional.empty(), Optional.empty(), Optional.empty());
         assertThat(players, empty());
 
-        players = dynamicQueriesService.searchTeamPlayers(1884881, Optional.empty(), Optional.of(minHeight - 1), Optional.of(maxHeight + 1),
-                Optional.empty(), Optional.empty());
+        players = dynamicQueriesService.searchTeamPlayers(1884881, Optional.empty(), Optional.of(minHeight - 1),
+                Optional.of(maxHeight + 1), Optional.empty(), Optional.empty());
         assertThat(players, not(empty()));
 
         players = dynamicQueriesService.searchTeamPlayers(1884881, Optional.empty(), Optional.of(190), Optional.of(200),
@@ -127,14 +100,14 @@ class DynamicQueriesServiceTest {
         assertThat(events, not(empty()));
         assertThat(events, hasSize(201));
 
-        events = dynamicQueriesService.searchMatchEventsRange(400222854,
-                Optional.empty(), Optional.of(LocalDateTime.of(2023, 7, 21, 5, 8, 0)));
+        events = dynamicQueriesService.searchMatchEventsRange(400222854, Optional.empty(),
+                Optional.of(LocalDateTime.of(2023, 7, 21, 5, 8, 0)));
         assertThat(events, not(empty()));
         assertThat(events, hasSize(26));
 
         events = dynamicQueriesService.searchMatchEventsRange(400222854,
                 Optional.of(LocalDateTime.of(2023, 7, 21, 5, 8, 0)),
-                        Optional.of(LocalDateTime.of(2023, 7, 21, 5, 10, 0)));
+                Optional.of(LocalDateTime.of(2023, 7, 21, 5, 10, 0)));
         assertThat(events, not(empty()));
         assertThat(events, hasSize(2));
 
@@ -145,7 +118,7 @@ class DynamicQueriesServiceTest {
     }
 
     @Test
-    void searchMatchEventsRangeAndMap(){
+    void searchMatchEventsRangeAndMap() {
         List<MatchEvent> events = dynamicQueriesService.searchMatchEventsRangeAndMap(400222854, Optional.empty(),
                 Optional.empty());
         assertThat(events, not(empty()));
@@ -156,8 +129,8 @@ class DynamicQueriesServiceTest {
         assertThat(events, not(empty()));
         assertThat(events, hasSize(201));
 
-        events = dynamicQueriesService.searchMatchEventsRangeAndMap(400222854,
-                Optional.empty(), Optional.of(LocalDateTime.of(2023, 7, 21, 5, 8, 0)));
+        events = dynamicQueriesService.searchMatchEventsRangeAndMap(400222854, Optional.empty(),
+                Optional.of(LocalDateTime.of(2023, 7, 21, 5, 8, 0)));
         assertThat(events, not(empty()));
         assertThat(events, hasSize(26));
 
@@ -174,7 +147,6 @@ class DynamicQueriesServiceTest {
 
     }
 
-
     @Test
     void deleteEventRangeTest() {
         List<MatchEventEntity> events = dynamicQueriesService.searchMatchEventsRange(400258556, Optional.empty(),
@@ -185,8 +157,7 @@ class DynamicQueriesServiceTest {
         dynamicQueriesService.deleteEventRange(400258556, LocalDateTime.of(2023, 8, 16, 10, 2, 0),
                 LocalDateTime.of(2023, 8, 16, 10, 4, 0));
 
-        events = dynamicQueriesService.searchMatchEventsRange(400258556, Optional.empty(),
-                Optional.empty());
+        events = dynamicQueriesService.searchMatchEventsRange(400258556, Optional.empty(), Optional.empty());
         assertThat(events, not(empty()));
         assertThat(events, hasSize(252));
 
@@ -199,8 +170,8 @@ class DynamicQueriesServiceTest {
         assertThat(players, not(empty()));
         assertThat(players, hasSize(736));
 
-        Album album = albumsService.buyAlbum(user1.id(), "album1");
-        List<Card> cards = albumsService.buyCards(user1.id(), 1);
+        albumsService.buyAlbum(user1.id(), "album1");
+        albumsService.buyCards(user1.id(), 1);
         albumsService.useAllCardAvailable(user1.id());
         players = dynamicQueriesService.searchUserMissingPlayers(user1.id());
         assertThat(players, hasSize(735));
@@ -213,12 +184,10 @@ class DynamicQueriesServiceTest {
         assertThat(players, not(empty()));
         assertThat(players, hasSize(736));
 
-        Album album = albumsService.buyAlbum(user1.id(), "album1");
-        List<Card> cards = albumsService.buyCards(user1.id(), 1);
+        albumsService.buyAlbum(user1.id(), "album1");
+        albumsService.buyCards(user1.id(), 1);
         albumsService.useAllCardAvailable(user1.id());
         players = dynamicQueriesService.searchUserMissingPlayersAndMap(user1.id());
         assertThat(players, hasSize(735));
     }
-
-
 }
