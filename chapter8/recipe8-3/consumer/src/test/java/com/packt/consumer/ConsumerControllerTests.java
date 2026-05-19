@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient; // Neues SB 4 Package
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -11,28 +12,43 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {ConsumerApplication.class,
-        ConsumerController.class, ConsumerControllerTests.Config.class})
+import static org.assertj.core.api.Assertions.assertThat; // Moderner Standard für Assertions
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {
+        ConsumerApplication.class,
+        ConsumerController.class,
+        ConsumerControllerTests.Config.class
+})
+@AutoConfigureWebTestClient // Zwingend erforderlich in SB 4 für @SpringBootTest + WebTestClient
 public class ConsumerControllerTests {
+
+    private static final WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
 
     @TestConfiguration
     static class Config {
-        @Bean
+        @Bean(destroyMethod = "stop")
         public WireMockServer webServer() {
-            WireMockServer wireMockServer = new WireMockServer(7979);
-            wireMockServer.start();
+            if (!wireMockServer.isRunning()) {
+                wireMockServer.start();
+            }
             return wireMockServer;
         }
     }
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("footballservice.url", () -> "http://localhost:7979");
+        // Startet den Server vor der Kontext-Initialisierung und übergibt den dynamischen Port an das Projekt
+        if (!wireMockServer.isRunning()) {
+            wireMockServer.start();
+        }
+        registry.add("footballservice.url", () -> "http://localhost:" + wireMockServer.port());
     }
 
     @Autowired
     private WebTestClient webTestClient;
+
     @Autowired
     private WireMockServer server;
 
@@ -81,7 +97,6 @@ public class ConsumerControllerTests {
         // ACT & ASSERT
         webTestClient.get().uri("/consumer/cards/1").exchange().expectStatus().isOk().expectBody(Card.class)
                 .isEqualTo(new Card("1", "WWC23", "Ivana Andres", 7));
-
     }
 
     @Test
@@ -107,7 +122,8 @@ public class ConsumerControllerTests {
         // ACT & ASSERT
         String content = webTestClient.get().uri("/consumer/error").exchange().expectStatus().isOk()
                 .returnResult(String.class).getResponseBody().blockFirst();
-        assert (content.contains("Remote server returned 500"));
+
+        assertThat(content).contains("Remote server returned 500");
     }
 
     @Test
@@ -127,3 +143,4 @@ public class ConsumerControllerTests {
                 .isEqualTo("Remote server returned 404");
     }
 }
+
