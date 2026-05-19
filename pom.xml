@@ -48,26 +48,11 @@
 
     <module>chapter7/recipe7-1/football</module>
 
+    <module>chapter8/recipe8-1/cards</module>
+    <module>chapter8/recipe8-1/cards-functional</module>
 
     <!--
-    <module>chapter3/recipe3-7/footballobs</module>
-    <module>chapter3/recipe3-8/footballclient</module>
-    <module>chapter3/recipe3-8/footballobs</module>
 
-    <module>chapter3/recipe3-3/footballobs</module>
-    <module>chapter3/recipe3-4/footballclient</module>
-    <module>chapter3/recipe3-4/footballobs</module>
-    <module>chapter3/recipe3-5/footballclient</module>
-    <module>chapter3/recipe3-5/footballobs</module>
-    <module>chapter3/recipe3-6/footballclient</module>
-    <module>chapter3/recipe3-6/footballobs</module>
-    <module>chapter3/recipe3-7/footballclient</module>
-    <module>chapter3/recipe3-7/footballobs</module>
-    <module>chapter3/recipe3-8/footballclient</module>
-    <module>chapter3/recipe3-8/footballobs</module> -->
-
-   <!--
-    s<module>chapter4/recipe4-1/registry</module>
     <module>chapter4/recipe4-2/albums</module>
     <module>chapter4/recipe4-2/football</module>
     <module>chapter4/recipe4-2/registry</module>
