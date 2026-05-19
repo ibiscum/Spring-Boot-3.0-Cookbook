@@ -5,6 +5,8 @@
     ./mvnw -N wrapper:wrapper -Dmaven=3.9.12
     ./mvnw clean install -U
     ./mvnw spring-boot:run
+    ./mvnw dependency:tree
+
 
     watch curl http://localhost:8090/players
 
