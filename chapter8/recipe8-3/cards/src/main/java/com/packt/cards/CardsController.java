@@ -35,5 +35,4 @@ public class CardsController {
         problemDetail.setTitle("sample exception");
         return problemDetail;
     }
-
 }
