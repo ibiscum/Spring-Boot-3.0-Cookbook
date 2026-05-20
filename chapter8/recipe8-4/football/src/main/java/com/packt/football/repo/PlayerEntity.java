@@ -83,5 +83,4 @@ public class PlayerEntity {
     public void setWeight(Integer weight) {
         this.weight = weight;
     }
-
 }

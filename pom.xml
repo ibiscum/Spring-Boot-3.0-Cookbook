@@ -50,6 +50,13 @@
 
     <module>chapter8/recipe8-1/cards</module>
     <module>chapter8/recipe8-1/cards-functional</module>
+    <module>chapter8/recipe8-2/cards</module>
+    <module>chapter8/recipe8-2/consumer</module>
+    <module>chapter8/recipe8-3/cards</module>
+    <module>chapter8/recipe8-3/consumer</module>
+    <module>chapter8/recipe8-4/football</module>
+    <module>chapter8/recipe8-5/timeline</module>
+    <module>chapter8/recipe8-5/matches</module>
 
     <!--
 
