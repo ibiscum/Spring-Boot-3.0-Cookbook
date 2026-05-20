@@ -32,19 +32,12 @@
 			<scope>test</scope>
 		</dependency>
 
-    	<!-- <dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-test</artifactId>
-			<scope>test</scope>
-		</dependency> -->
+        <dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+			<version>3.0.3</version>
+		</dependency>
 
-    	<!-- Using standalone version as there is an incompatibility with Spring Boot 3.2.1 - See: https://github.com/wiremock/wiremock/issues/2395 -->
-		<!-- <dependency>
-			<groupId>com.github.tomakehurst</groupId>
-			<artifactId>wiremock-standalone</artifactId>
-			<version>3.0.1</version>
-			<scope>test</scope>
-		</dependency> -->
 	</dependencies>
 
 	<build>

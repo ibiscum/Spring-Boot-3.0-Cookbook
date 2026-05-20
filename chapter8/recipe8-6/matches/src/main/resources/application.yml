@@ -1,19 +1,6 @@
 spring:
   application:
     name: matches
-
-logging:
-  level:
-    org:
-      springframework:
-        amqp: DEBUG
-management:
-  endpoints:
-    web:
-      exposure:
-        include: bindings, health, info, metrics, env, beans, loggers
-
-spring:
   rabbitmq:
     host: localhost
     username: packt
@@ -29,3 +16,14 @@ spring:
           matchEvents-out-0:
             producer:
               routing-key-expression: headers.eventType
+
+logging:
+  level:
+    org:
+      springframework:
+        amqp: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bindings, health, info, metrics, env, beans, loggers
