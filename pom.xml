@@ -57,6 +57,12 @@
     <module>chapter8/recipe8-4/football</module>
     <module>chapter8/recipe8-5/timeline</module>
     <module>chapter8/recipe8-5/matches</module>
+    <module>chapter8/recipe8-6/timeline</module>
+    <module>chapter8/recipe8-6/matches</module>
+    <module>chapter8/recipe8-6/score</module>
+    <module>chapter8/recipe8-7/timeline</module>
+    <module>chapter8/recipe8-7/matches</module>
+    <module>chapter8/recipe8-7/score</module>
 
     <!--
 
