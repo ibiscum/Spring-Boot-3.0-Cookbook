@@ -19,6 +19,7 @@
     <properties>
 		<java.version>25</java.version>
         <testcontainers.version>2.0.5</testcontainers.version>
+        <netty.version>4.2.13.Final</netty.version>
 	</properties>
 
     <dependencies>
