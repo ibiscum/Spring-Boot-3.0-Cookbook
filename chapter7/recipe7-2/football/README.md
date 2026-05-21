@@ -1,4 +1,4 @@
-# Spring Boot 3.0 Cookbook - Chapter 7 - recipe7-1
+# Spring Boot 3.0 Cookbook - Chapter 7 - recipe7-2
 
     ./mvnw -N wrapper:wrapper -Dmaven=3.9.15
     ./mvnw clean install -U

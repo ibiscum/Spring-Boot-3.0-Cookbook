@@ -1,18 +1,13 @@
 package com.packt.football.service;
 
+import com.packt.football.config.FootballContainersConfig;
 import com.packt.football.domain.*;
 import com.packt.football.repo.MatchEventEntity;
 import com.packt.football.repo.PlayerEntity;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,30 +19,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 @SpringBootTest
-@Testcontainers
-@ContextConfiguration(initializers = DynamicQueriesServiceTest.Initializer.class)
+@Import(FootballContainersConfig.class)
 class DynamicQueriesServiceTest {
-
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("football")
-            .withUsername("football")
-            .withPassword("football");
-
-    static class Initializer
-            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                            "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                            "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                            "spring.datasource.password=" + postgreSQLContainer.getPassword())
-                    .applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
-
-    @BeforeAll
-    public static void startContainer() {
-        postgreSQLContainer.start();
-    }
 
     @Autowired
     DynamicQueriesService dynamicQueriesService;
@@ -199,8 +172,8 @@ class DynamicQueriesServiceTest {
         assertThat(players, not(empty()));
         assertThat(players, hasSize(736));
 
-        Album album = albumsService.buyAlbum(user1.id(), "album1");
-        List<Card> cards = albumsService.buyCards(user1.id(), 1);
+        albumsService.buyAlbum(user1.id(), "album1");
+        albumsService.buyCards(user1.id(), 1);
         albumsService.useAllCardAvailable(user1.id());
         players = dynamicQueriesService.searchUserMissingPlayers(user1.id());
         assertThat(players, hasSize(735));
@@ -213,12 +186,10 @@ class DynamicQueriesServiceTest {
         assertThat(players, not(empty()));
         assertThat(players, hasSize(736));
 
-        Album album = albumsService.buyAlbum(user1.id(), "album1");
-        List<Card> cards = albumsService.buyCards(user1.id(), 1);
+        albumsService.buyAlbum(user1.id(), "album1");
+        albumsService.buyCards(user1.id(), 1);
         albumsService.useAllCardAvailable(user1.id());
         players = dynamicQueriesService.searchUserMissingPlayersAndMap(user1.id());
         assertThat(players, hasSize(735));
     }
-
-
 }

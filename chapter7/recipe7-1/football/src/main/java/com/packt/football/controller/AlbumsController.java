@@ -59,7 +59,4 @@ public class AlbumsController {
     public List<Card> tradeCardsBetweenUsers(@PathVariable Integer userId1, @PathVariable Integer userId2) {
         return albumsService.tradeAllCards(userId1, userId2);
     }
-
-    
-
 }

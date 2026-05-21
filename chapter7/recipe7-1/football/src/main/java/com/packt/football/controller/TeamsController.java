@@ -48,5 +48,4 @@ public class TeamsController {
     public List<TeamPlayers> getNumberOfPlayersByPosition(@PathVariable String position) {
         return footballService.getNumberOfPlayersByPosition(position);
     }
-
 }

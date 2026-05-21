@@ -2,6 +2,7 @@
 
     ./mvnw -N wrapper:wrapper -Dmaven=3.9.15
     ./mvnw spring-boot:run
+    ./mvnw gatling:test
 
     curl http://localhost:8080/cards
 
