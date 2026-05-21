@@ -1,7 +1,5 @@
 package com.packt.football.repo;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -10,7 +8,7 @@ public class TeamEntity {
     @Id
     private Integer id;
     private String name;
-    
+
     public Integer getId() {
         return id;
     }
