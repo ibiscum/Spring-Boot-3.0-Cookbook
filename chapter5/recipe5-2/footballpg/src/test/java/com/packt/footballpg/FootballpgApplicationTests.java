@@ -9,5 +9,4 @@ class FootballpgApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
