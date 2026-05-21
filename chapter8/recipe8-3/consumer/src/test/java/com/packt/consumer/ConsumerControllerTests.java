@@ -16,15 +16,13 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat; // Moderner Standard für Assertions
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {
-        ConsumerApplication.class,
-        ConsumerController.class,
-        ConsumerControllerTests.Config.class
-})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { ConsumerApplication.class,
+        ConsumerController.class, ConsumerControllerTests.Config.class })
 @AutoConfigureWebTestClient // Zwingend erforderlich in SB 4 für @SpringBootTest + WebTestClient
 public class ConsumerControllerTests {
 
-    private static final WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
+    private static final WireMockServer wireMockServer = new WireMockServer(
+            WireMockConfiguration.wireMockConfig().dynamicPort());
 
     @TestConfiguration
     static class Config {
@@ -39,7 +37,8 @@ public class ConsumerControllerTests {
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
-        // Startet den Server vor der Kontext-Initialisierung und übergibt den dynamischen Port an das Projekt
+        // Startet den Server vor der Kontext-Initialisierung und übergibt den
+        // dynamischen Port an das Projekt
         if (!wireMockServer.isRunning()) {
             wireMockServer.start();
         }
@@ -55,32 +54,26 @@ public class ConsumerControllerTests {
     @Test
     public void getCards() {
         // ARRANGE
-        server.stubFor(WireMock.get(WireMock.urlEqualTo("/cards"))
-                .willReturn(
-                        WireMock.aResponse()
-                                .withStatus(200)
-                                .withHeader("Content-Type", "application/json")
-                                .withBody("""
-                                [
-                                    {
-                                        "cardId": "1",
-                                        "album": "WWC23",
-                                        "player": "Ivana Andres",
-                                        "ranking": 7
-                                    },
-                                    {
-                                        "cardId": "2",
-                                        "album": "WWC23",
-                                        "player": "Alexia Putellas",
-                                        "ranking": 1
-                                    }
-                                ]""")));
+        server.stubFor(WireMock.get(WireMock.urlEqualTo("/cards")).willReturn(
+                WireMock.aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody("""
+                        [
+                            {
+                                "cardId": "1",
+                                "album": "WWC23",
+                                "player": "Ivana Andres",
+                                "ranking": 7
+                            },
+                            {
+                                "cardId": "2",
+                                "album": "WWC23",
+                                "player": "Alexia Putellas",
+                                "ranking": 1
+                            }
+                        ]""")));
         // ACT & ASSERT
-        webTestClient.get().uri("/consumer/cards")
-                .exchange().expectStatus().isOk()
-                .expectBodyList(Card.class).hasSize(2)
-                .contains(new Card("1", "WWC23", "Ivana Andres", 7),
-                        new Card("2", "WWC23", "Alexia Putellas", 1));
+        webTestClient.get().uri("/consumer/cards").exchange().expectStatus().isOk().expectBodyList(Card.class)
+                .hasSize(2)
+                .contains(new Card("1", "WWC23", "Ivana Andres", 7), new Card("2", "WWC23", "Alexia Putellas", 1));
     }
 
     @Test
@@ -143,4 +136,3 @@ public class ConsumerControllerTests {
                 .isEqualTo("Remote server returned 404");
     }
 }
-
