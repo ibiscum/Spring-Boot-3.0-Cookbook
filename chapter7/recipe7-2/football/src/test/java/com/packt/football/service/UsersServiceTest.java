@@ -5,19 +5,11 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.springframework.context.annotation.Import;
-
 import com.packt.football.config.FootballContainersConfig;
-
-
 import com.packt.football.domain.User;
 
 @SpringBootTest

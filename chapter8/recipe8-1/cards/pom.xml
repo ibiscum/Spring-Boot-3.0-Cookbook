@@ -43,19 +43,6 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>io.gatling</groupId>
-            <artifactId>gatling-app</artifactId>
-            <version>3.15.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.gatling.highcharts</groupId>
-            <artifactId>gatling-charts-highcharts</artifactId>
-            <version>3.15.0</version>
-            <scope>test</scope>
-        </dependency>
-
 	</dependencies>
 
 	<build>
@@ -70,22 +57,6 @@
                     </jvmArguments>
                 </configuration>
 			</plugin>
-            <plugin>
-                <groupId>io.gatling</groupId>
-                <artifactId>gatling-maven-plugin</artifactId>
-                <version>4.21.5</version>
-                <configuration>
-                    <simulationClass>com.packt.cards.simulation.BreakingPointSimulation</simulationClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 		</plugins>
 	</build>
 
