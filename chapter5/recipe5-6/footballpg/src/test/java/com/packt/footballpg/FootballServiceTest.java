@@ -22,34 +22,15 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.context.annotation.Import;
+import com.packt.footballpg.config.FootballContainersConfig;
 
 @SpringBootTest
-@Testcontainers
-@ContextConfiguration(initializers = FootballServiceTest.Initializer.class)
+@Import(FootballContainersConfig.class)
 public class FootballServiceTest {
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("football")
-            .withUsername("football")
-            .withPassword("football");
-
-    static class Initializer
-            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgreSQLContainer.getPassword())
-                    .applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
-
-    @BeforeAll
-    public static void startContainer() {
-        postgreSQLContainer.start();
-    }
 
     @Autowired
-    FootballService footballService;    
+    FootballService footballService;
 
     @Test
     public void createTeamTest() {
@@ -69,7 +50,7 @@ public class FootballServiceTest {
         // ACT&ASSERT: Get the team
         assertThat(footballService.getTeam(team.id()), notNullValue());
     }
-    
+
     @Test
     public void getTeam_notFound() {
         // ACT&ASSERT: Get a team that does not exist
