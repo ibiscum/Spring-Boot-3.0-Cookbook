@@ -24,34 +24,15 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.context.annotation.Import;
+import com.packt.footballpg.config.FootballContainersConfig;
 
 @SpringBootTest
-@Testcontainers
-@ContextConfiguration(initializers = FootballServiceTest.Initializer.class)
+@Import(FootballContainersConfig.class)
 public class FootballServiceTest {
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("football")
-            .withUsername("football")
-            .withPassword("football");
-
-    static class Initializer
-            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgreSQLContainer.getPassword())
-                    .applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
-
-    @BeforeAll
-    public static void startContainer() {
-        postgreSQLContainer.start();
-    }
 
     @Autowired
-    FootballService footballService;    
+    FootballService footballService;
 
     @Test
     public void createTeamTest() {
@@ -71,7 +52,7 @@ public class FootballServiceTest {
         assertThat(team, notNullValue());
         assertThat(team.players(), notNullValue());
     }
-    
+
     @Test
     public void getTeam_notFound() {
         // ACT&ASSERT: Get a team that does not exist
@@ -87,13 +68,13 @@ public class FootballServiceTest {
     @Test
     public void getPlayersByMatch(){
         List<Player> players = footballService.getPlayersByMatch(400222852);
-        assertThat(players, not(empty()));  
+        assertThat(players, not(empty()));
     }
 
     @Test
     public void getPlayersByMatch_notFound(){
         List<Player> players = footballService.getPlayersByMatch(9999999);
-        assertThat(players, empty());  
+        assertThat(players, empty());
     }
 
     @Test
