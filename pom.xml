@@ -48,6 +48,9 @@
 
     <module>chapter5/recipe5-1/footballpg</module>
     <module>chapter5/recipe5-2/footballpg</module>
+    <module>chapter5/recipe5-3/footballpg</module>
+    <module>chapter5/recipe5-4/footballpg</module>
+    <module>chapter5/recipe5-5/footballpg</module>
 
     <module>chapter7/recipe7-1/football</module>
     <module>chapter7/recipe7-2/football</module>

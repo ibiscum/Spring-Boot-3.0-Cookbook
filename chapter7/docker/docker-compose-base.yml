@@ -15,6 +15,15 @@ services:
     ports:
       - '127.0.0.1:5432:5432'
 
+  postgresql2:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=packt
+      - POSTGRES_PASSWORD=packt
+      - POSTGRES_DB=football2
+    ports:
+      - '127.0.0.1:5433:5432'
+
   prometheus:
     image: prom/prometheus
     volumes:
