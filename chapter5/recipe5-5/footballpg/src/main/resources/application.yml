@@ -7,6 +7,6 @@ spring:
         init:
             mode: always
     datasource:
-        url: jdbc:postgresql://localhost:5432/football2
+        url: jdbc:postgresql://localhost:5433/football2
         username: packt
         password: packt
