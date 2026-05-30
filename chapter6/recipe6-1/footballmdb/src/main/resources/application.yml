@@ -1,8 +1,12 @@
 spring:
-  data:
-    mongodb:
-      uri: mongodb://127.0.0.1:27017/?directConnection=true
-      database: football
+  mongodb:
+    host: localhost
+    port: 27017
+    username: packt
+    password: packt
+    database: football
+    authentication-database: admin
+
 logging:
   level:
     org:
