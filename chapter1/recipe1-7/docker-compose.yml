@@ -1,16 +1,16 @@
 name: spring-boot-cookbook
 services:
 
-  recipe1-6-albums:
+  recipe1-7-albums:
     build: ./albums
-    image: recipe1-6-albums
+    image: recipe1-7-albums
     ports:
       - '127.0.0.1:8081:8080'
     mem_limit: 512m
 
-  recipe1-6-football:
+  recipe1-7-football:
     build: ./football
-    image: recipe1-6-football
+    image: recipe1-7-football
     ports:
       - '127.0.0.1:8080:8080'
     mem_limit: 512m

@@ -8,13 +8,16 @@
 		<version>4.0.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.packt</groupId>
 	<artifactId>recipe6-1-footballmdb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>recipe6-1-footballmdb</name>
 	<description>Demo project for Spring Boot 3 Cookbook</description>
-	<properties>
+
+    <properties>
 		<java.version>25</java.version>
+		<tomcat.version>[11.0.22,)</tomcat.version>
 	</properties>
 
 	<dependencies>

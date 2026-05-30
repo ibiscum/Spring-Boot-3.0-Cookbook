@@ -1,4 +1,3 @@
-name: ch7-docker-compose-base.yml
 services:
   grafana:
     image: grafana/grafana
@@ -11,25 +10,15 @@ services:
     environment:
       - POSTGRES_USER=packt
       - POSTGRES_PASSWORD=packt
-      - POSTGRES_DB=football
     ports:
-      - '127.0.0.1:5432:5432'
-
-  postgresql2:
-    image: postgres:latest
-    environment:
-      - POSTGRES_USER=packt
-      - POSTGRES_PASSWORD=packt
-      - POSTGRES_DB=football2
-    ports:
-      - '127.0.0.1:5433:5432'
+      - '5432:5432'
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:main-distroless
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
-      - '127.0.0.1:19090:9090'
+      - '9090:9090'
 
   # Use Cassandra instead of in-memory storage
   zipkin:
@@ -47,7 +36,7 @@ services:
       - MYSQL_PASS=zipkin
       - JAVA_OPTS=-Xms2g -Xmx2g -XX:+ExitOnOutOfMemoryError
     ports:
-      - '127.0.0.1:9411:9411'
+      - '9411:9411'
   zipkin_storage:
     image: ghcr.io/openzipkin/zipkin-mysql:${TAG:-latest}
     container_name: mysql
