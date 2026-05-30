@@ -25,6 +25,7 @@ services:
       - prometheus
     ports:
       - '127.0.0.1:3000:3000'
+      
   postgresql:
     image: postgres:16.14-alpine3.23
     container_name: football-db
@@ -69,6 +70,7 @@ services:
       - JAVA_OPTS=-Xms2g -Xmx2g -XX:+ExitOnOutOfMemoryError
     ports:
       - '127.0.0.1:9411:9411'
+  
   zipkin_storage:
     image: ghcr.io/openzipkin/zipkin-mysql:${TAG:-latest}
     container_name: mysql

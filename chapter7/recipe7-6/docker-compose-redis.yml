@@ -1,8 +1,8 @@
-name: ch7-docker-compose-redis
+name: spring-boot-cookbook
 include:
   - docker-compose-base.yml
 services:
   redis:
     image: redis:8.6.3
     ports:
-      - '127.0.0.1:16379:6379'
+      - '127.0.0.1:6379:6379'

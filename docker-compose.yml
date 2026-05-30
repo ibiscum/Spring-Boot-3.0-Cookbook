@@ -1,0 +1,98 @@
+name: spring-boot-cookbook
+services:
+  cassandra:
+    image: cassandra:5.0.8
+    environment:
+      CASSANDRA_CLUSTER_NAME: football
+      CASSANDRA_KEYSPACE: football
+      CASSANDRA_USERNAME: packt
+      CASSANDRA_PASSWORD: packt
+    ports:
+      - '127.0.0.1:9042:9042'
+    restart: always
+
+  grafana:
+    image: grafana/grafana:main-distroless-slim
+    depends_on:
+      - prometheus
+    ports:
+      - '127.0.0.1:3000:3000'
+
+  mongo:
+    image: mongo:7.0.3
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: packt
+      MONGO_INITDB_ROOT_PASSWORD: packt
+      MONGO_INITDB_DATABASE: football
+    ports:
+      - '127.0.0.1:27017:27017'
+    restart: always
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:sha256-23d16399d55301d6f6693e6ce16d07d57f11dbf7e1ddbcbcab3a01fed0e7b974.sig
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - '127.0.0.1:4317:4317' # OTLP gRPC
+      - '127.0.0.1:4318:4318' # OTLP HTTP
+    networks:
+      - observability
+    command: [ "--config=/etc/otel-collector-config.yaml" ]
+
+  postgresql:
+    image: postgres:18.3-alpine3.22
+    environment:
+      POSTGRES_USER: packt
+      POSTGRES_PASSWORD: packt
+      POSTGRES_DB: football
+    ports:
+      - '127.0.0.1:5432:5432'
+    restart: always
+
+  postgresql2:
+    image: postgres:18.3-alpine3.22
+    environment:
+      POSTGRES_USER: packt
+      POSTGRES_PASSWORD: packt
+      POSTGRES_DB: football
+    ports:
+      - '127.0.0.1:5433:5433'
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:main-distroless-slim
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - '127.0.0.1:19090:9090'
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: "packt"
+      RABBITMQ_DEFAULT_PASS: "packt"
+    ports:
+      - '127.0.0.1:5672:5672'
+      - '127.0.0.1:15672:15672'
+    hostname: football-rabbit
+
+  redis:
+    image: redis:8.6.3
+    ports:
+      - '127.0.0.1:16379:6379'
+
+  zipkin:
+    image: openzipkin/zipkin:3-amd64
+    ports:
+      - '127.0.0.1:9411:9411'
+    networks:
+      - observability
+    restart: always
+
+networks:
+  observability:
+    driver: bridge
+
+# zipkin_storage:
+#     image: ghcr.io/openzipkin/zipkin-mysql:${TAG:-latest}
+#     container_name: mysql
