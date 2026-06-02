@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,6 +47,7 @@ public class FootballService {
     }
 
     @Transactional(readOnly = true)
+    @Nullable
     public Team getTeam(Integer id) {
         TeamEntity team = teamRepository.findByIdWithPlayers(id).orElse(null);
         if (team == null) {
@@ -88,6 +90,7 @@ public class FootballService {
         return new Team(team.getId(), team.getName(), List.of());
     }
 
+    @Nullable
     public Player updatePlayerPosition(Integer id, String position) {
         PlayerEntity player = playerRepository.findById(id).orElse(null);
         if (player == null) {
@@ -195,10 +198,12 @@ public class FootballService {
                 .map(t -> new Team(t.getId(), t.getName(), List.of())).collect(Collectors.toList());
     }
 
+    @Nullable
     public Player getPlayer(Integer id) {
         return playerRepository.findById(id).map(p -> playerMapper.map(p)).orElse(null);
     }
 
+    @Nullable
     public Team getPlayerTeam(Integer id) {
         return playerRepository.findByIdWithTeam(id)
                 .map(p -> new Team(p.getTeam().getId(), p.getTeam().getName(), List.of())).orElse(null);
