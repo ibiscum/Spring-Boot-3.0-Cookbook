@@ -1,6 +1,7 @@
 package com.packt.footballmdb.service;
 
 import java.util.List;
+import org.springframework.lang.Nullable;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -33,10 +34,12 @@ public class FootballService {
         // this.matchRepository = matchRepository;
     }
 
+    @Nullable
     public Team getTeam(String id) {
         return teamRepository.findById(id).orElse(null);
     }
 
+    @Nullable
     public Team getTeamByName(String name) {
         return teamRepository.findByName(name).orElse(null);
     }
@@ -45,6 +48,7 @@ public class FootballService {
         return teamRepository.findByNameContaining(name);
     }
 
+    @Nullable
     public Player getPlayer(String id) {
         return playerRepository.findById(id).orElse(null);
     }

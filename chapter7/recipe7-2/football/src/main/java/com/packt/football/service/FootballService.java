@@ -6,6 +6,7 @@ import com.packt.football.domain.Player;
 import com.packt.football.domain.Team;
 import com.packt.football.mapper.PlayerMapper;
 import com.packt.football.repo.*;
+import org.springframework.lang.Nullable;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -42,6 +43,7 @@ public class FootballService {
         }
 
         @Transactional(readOnly = true)
+        @Nullable
         public Team getTeam(Integer id) {
                 TeamEntity team = teamRepository.findByIdWithPlayers(id).orElse(null);
                 if (team == null) {
@@ -84,6 +86,7 @@ public class FootballService {
                 return new Team(team.getId(), team.getName(), List.of());
         }
 
+        @Nullable
         public Player updatePlayerPosition(Integer id, String position) {
                 PlayerEntity player = playerRepository.findById(id).orElse(null);
                 if (player == null) {
@@ -155,6 +158,7 @@ public class FootballService {
                 return teamRepository.getNumberOfPlayersByPosition(position);
         }
 
+        @Nullable
         public Match getMatchWithTimeline(Integer matchId) {
                 MatchEntity match = matchRepository.findByIdWithTimeline(matchId).orElse(null);
                 if (match != null) {
@@ -202,10 +206,12 @@ public class FootballService {
         }
 
         @Cacheable(value = "players")
+        @Nullable
         public Player getPlayer(Integer id) {
                 return playerRepository.findById(id).map(p -> playerMapper.map(p)).orElse(null);
         }
 
+        @Nullable
         public Team getPlayerTeam(Integer id) {
                 return playerRepository.findByIdWithTeam(id)
                                 .map(p -> new Team(p.getTeam().getId(), p.getTeam().getName(), List.of())).orElse(null);

@@ -2,6 +2,7 @@ package com.packt.footballpg;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.lang.Nullable;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class FootballService {
 
     
     @Transactional(readOnly = true)
+    @Nullable
     public Team getTeam(Integer id) {
         TeamEntity team = teamRepository.findById(id).orElse(null);
         if (team == null) {
@@ -58,6 +60,7 @@ public class FootballService {
         return new Team(team.getId(), team.getName(), List.of());
     }
 
+    @Nullable
     public Player updatePlayerPosition(Integer id, String position) {
         PlayerEntity player = playerRepository.findById(id).orElse(null);
         if (player == null) {
