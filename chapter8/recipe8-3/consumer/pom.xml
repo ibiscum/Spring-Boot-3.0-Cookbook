@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.wiremock</groupId>
             <artifactId>wiremock-standalone</artifactId>
-            <version>3.6.0</version> <!-- Oder eine aktuellere 3.x-Version für Spring Boot 4 -->
+            <version>3.13.2</version> <!-- Oder eine aktuellere 3.x-Version für Spring Boot 4 -->
             <scope>test</scope>
         </dependency>
 
