@@ -20,7 +20,7 @@
     <properties>
 		<java.version>25</java.version>
         <tomcat.version>[11.0.22,)</tomcat.version>
-		<spring-cloud.version>2025.1.1</spring-cloud.version>
+		<spring-cloud.version>2025.1.2</spring-cloud.version>
 	</properties>
 
     <dependencyManagement>
